@@ -1,0 +1,6 @@
+{
+    "name": "digita-webshop-backend",
+    "db": {
+        "address": "mongodb://localhost:27017/digita-webshop-backend"
+    }
+}
