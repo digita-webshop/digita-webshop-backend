@@ -1,0 +1,32 @@
+{
+  "name": "digita-webshop-backend",
+  "version": "1.0.0",
+  "description": "Setup: - run ```npm i && npm start``` for both client and server side to start the app",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "export DEBUG=app:main,app:start:db,app:start:logging && nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digita-webshop/digita-webshop-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/digita-webshop/digita-webshop-backend/issues"
+  },
+  "homepage": "https://github.com/digita-webshop/digita-webshop-backend#readme",
+  "dependencies": {
+    "auto-bind": "^4.0.0",
+    "config": "^3.3.7",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "mongoose": "^6.4.4"
+  },
+  "devDependencies": {
+    "debug": "^4.3.4",
+    "nodemon": "^2.0.19"
+  }
+}

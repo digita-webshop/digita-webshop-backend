@@ -1,0 +1,8 @@
+{
+  "name": "digita-webshop-backend",
+  "version": "0.0.1",
+  "PORT": "8080",
+  "db": {
+    "MONGO_URI": "mongodb+srv://digita:digitaWebshop@digita-webshop.w2s0dit.mongodb.net/?retryWrites=true&w=majority"
+  }
+}
