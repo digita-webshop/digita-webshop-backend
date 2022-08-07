@@ -5,4 +5,8 @@ module.exports = new (class extends controller {
   async dashboard(req, res) {
     res.send("user dashboard");
   }
+
+  async me(req, res) {
+    this.response({ res, data: _.pick(req.user, ["userName", "email"]) });
+  }
 })();
