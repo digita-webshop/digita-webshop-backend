@@ -20,9 +20,11 @@
   "homepage": "https://github.com/digita-webshop/digita-webshop-backend#readme",
   "dependencies": {
     "auto-bind": "^4.0.0",
+    "bcrypt": "^5.0.1",
     "config": "^3.3.7",
     "express": "^4.18.1",
     "express-validator": "^6.14.2",
+    "lodash": "^4.17.21",
     "mongoose": "^6.4.4"
   },
   "devDependencies": {
