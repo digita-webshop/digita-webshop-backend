@@ -1,4 +1,4 @@
-const controller = require("./../controller");
+const controller = require("./controller");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
 const config = require("config");
