@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const controller = require("./../controllers/adminController");
 
-router.get("/", (req, res) => res.send("admin router"));
+router.get("/", controller.dashboard);
 
 module.exports = router;
