@@ -9,5 +9,11 @@ module.exports = function () {
     process.exit(1);
   });
 
+  process.on("unhandledRejection", (ex) => {
+    debug(ex);
+    winston.error(ex.message, ex);
+    process.exit(1);
+  });
+
   winston.add(new winston.transports.File({ filename: "logFile.log" }));
 };
