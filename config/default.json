@@ -4,5 +4,6 @@
   "PORT": "8080",
   "db": {
     "MONGO_URI": "mongodb+srv://digita:digitaWebshop@digita-webshop.w2s0dit.mongodb.net/?retryWrites=true&w=majority"
-  }
+  },
+  "jwt_key": "digitaWebShopJ3onWebToken"
 }
