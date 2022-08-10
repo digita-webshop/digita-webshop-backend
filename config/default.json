@@ -5,5 +5,5 @@
   "db": {
     "MONGO_URI": "mongodb+srv://digita:digitaWebshop@digita-webshop.w2s0dit.mongodb.net/?retryWrites=true&w=majority"
   },
-  "jwt_key": "digitaWebShopJ3onWebToken"
+  "jwt_key": "Digita_WebShop_J3on_Web_Token"
 }
