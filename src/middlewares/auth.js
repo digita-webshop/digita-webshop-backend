@@ -20,7 +20,14 @@ async function isAdmin(req, res, next) {
   next();
 }
 
+async function isSuperAdmin(req, res, next) {
+  if (req.user.role !== "superAdmin")
+    return res.status(403).send("Access denied.");
+  next();
+}
+
 module.exports = {
   isLoggedIn,
   isAdmin,
+  isSuperAdmin,
 };
