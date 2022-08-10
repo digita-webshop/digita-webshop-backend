@@ -48,7 +48,9 @@ module.exports = new (class extends controller {
       });
     }
 
-    const token = jwt.sign({ _id: user.id }, config.get("jwt_key"));
+    const token = jwt.sign({ _id: user.id }, config.get("jwt_key"), {
+      expiresIn: "1h",
+    });
     this.response({ res, message: "Login successful", data: { token } });
   }
 })();
