@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+import { emailValidator } from "../validators/customValidator";
 
 const addressSchema = new mongoose.Schema({
   country: String,
@@ -24,11 +25,7 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       validate: {
-        validator: function (v) {
-          const emailRegex =
-            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return emailRegex.test(v);
-        },
+        validator: emailValidator,
         message: "Invalid email",
       },
     },
