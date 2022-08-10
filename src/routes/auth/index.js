@@ -4,10 +4,10 @@ const controller = require("../../controllers/authController");
 const validator = require("../../validators/authValidator");
 
 router.post(
-  "/register",
-  validator.registerValidator(),
+  "/signup",
+  validator.signupValidator(),
   validator.validate,
-  controller.register
+  controller.signup
 );
 
 router.post(

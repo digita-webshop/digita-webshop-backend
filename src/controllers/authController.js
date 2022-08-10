@@ -5,19 +5,19 @@ const config = require("config");
 const jwt = require("jsonwebtoken");
 
 module.exports = new (class extends controller {
-  async register(req, res) {
+  async signup(req, res) {
     let user = await this.User.findOne({ email: req.body.email });
     if (user) {
       return this.response({
         res,
-        code: 400,
-        message: "User already exists",
+        code: 422,
+        message: "User exists already, please login instead.",
       });
     }
 
     user = new this.User(_.pick(req.body, ["userName", "email", "password"]));
 
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(12);
     user.password = await bcrypt.hash(user.password, salt);
 
     await user.save();
@@ -34,17 +34,20 @@ module.exports = new (class extends controller {
     if (!user) {
       return this.response({
         res,
-        code: 400,
-        message: "User not found",
+        code: 403,
+        message: "Invalid credentials, could not log you in.",
       });
     }
 
-    const isValid = await bcrypt.compare(req.body.password, user.password);
-    if (!isValid) {
+    const isValidPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!isValidPassword) {
       return this.response({
         res,
-        code: 400,
-        message: "Invalid email or password",
+        code: 403,
+        message: "Invalid credentials, could not log you in.",
       });
     }
 
