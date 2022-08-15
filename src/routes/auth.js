@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../../controllers/authController");
-const validator = require("../../validators/authValidator");
+const fileUpload = require("../middlewares/fileUpload");
+const controller = require("../controllers/auth");
+const validator = require("../validators/auth");
 
 router.post(
   "/signup",
+  fileUpload.single("image"),
   validator.signupValidator(),
   validator.validate,
   controller.signup
