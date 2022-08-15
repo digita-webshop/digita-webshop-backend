@@ -34,3 +34,13 @@ export const verifyAdmin = (req, res, next) => {
     }
   });
 };
+
+export const verifySuperAdmin = (req, res, next) => {
+  verifyToken(req, res, next, () => {
+    if (req.user.role === "superAdmin") {
+      next();
+    } else {
+      return next(createError(403, "You are not authorized!"));
+    }
+  });
+};
