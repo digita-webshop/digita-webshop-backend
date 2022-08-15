@@ -4,8 +4,8 @@ const config = require("config");
 
 const PORT = config.get("PORT") || 5000;
 
-module.exports = function (app) {
-  mongoose
+module.exports = async function (app) {
+  await mongoose
     .connect(config.get("db.MONGO_URI"))
     .then(() =>
       // listen for requests
@@ -14,4 +14,7 @@ module.exports = function (app) {
       })
     )
     .catch(() => debug("could not connect to db"));
+  mongoose.connection.on("disconnected", () => {
+    debug("disconnected from db");
+  });
 };
