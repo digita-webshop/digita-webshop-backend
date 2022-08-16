@@ -1,18 +1,28 @@
 const express = require("express");
 const router = express.Router();
 
-const error = require("./../middlewares/error");
-const { isLoggedIn, isAdmin, isSuperAdmin } = require("./../middlewares/auth");
+const { error } = require("./../middlewares/error");
+const {
+  verifyUser,
+  verifyAdmin,
+  verifySuperAdmin,
+} = require("./../middlewares/verifyToken");
 
 const authRouter = require("./auth");
-const userRouter = require("./user");
-const adminRouter = require("./admin");
-const superAdminRouter = require('./superAdmin')
+const usersRouter = require("./users");
+const adminsRouter = require("./admins");
+const superAdminRouter = require("./superAdmin");
 
 router.use("/auth", authRouter);
-router.use("/user", isLoggedIn, userRouter);
-router.use("/admin", isLoggedIn, isAdmin, adminRouter);
-router.use("/superAdmin", isLoggedIn, isAdmin, isSuperAdmin, superAdminRouter)
+router.use("/user", verifyUser, usersRouter);
+router.use("/admin", verifyUser, verifyAdmin, adminsRouter);
+router.use(
+  "/superAdmin",
+  verifyUser,
+  verifyAdmin,
+  verifySuperAdmin,
+  superAdminRouter
+);
 
 router.use(error);
 
