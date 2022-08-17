@@ -15,9 +15,9 @@ const superAdminRouter = require("./superAdmin");
 
 router.use("/auth", authRouter);
 router.use("/user", verifyUser, usersRouter);
-router.use("/admin", verifyUser, verifyAdmin, adminsRouter);
+router.use("/panel/admin", verifyUser, verifyAdmin, adminsRouter);
 router.use(
-  "/superAdmin",
+  "/panel/superAdmin",
   verifyUser,
   verifyAdmin,
   verifySuperAdmin,
