@@ -47,4 +47,29 @@ module.exports = new (class extends controller {
       data: _.pick(user, ["_id", "userName", "email"]),
     });
   }
+
+  async getUser(req, res, next) {
+    this.checkParamsId(req.params.id);
+    const user = await this.User.findById(req.params.id);
+    if (!user)
+      return this.response({
+        res,
+        code: 404,
+        message: "User not found!",
+      });
+    this.response({
+      res,
+      message: "User found successfully",
+      data: _.pick(user, ["_id", "userName", "email"]),
+    });
+  }
+
+  async getUsers(req, res, next) {
+    const users = await this.User.find({}, "-password");
+    this.response({
+      res,
+      message: "Users found successfully",
+      data: users,
+    });
+  }
 })();
