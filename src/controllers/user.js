@@ -30,4 +30,21 @@ module.exports = new (class extends controller {
       data: _.pick(updatedUser, ["_id", "userName", "email"]),
     });
   }
+
+  async deleteUser(req, res, next) {
+    this.checkParamsId(req.params.id);
+    const user = await this.User.findByIdAndDelete(req.params.id);
+    if (!user) {
+      return this.response({
+        res,
+        code: 404,
+        message: "User not found!",
+      });
+    }
+    this.response({
+      res,
+      message: "User deleted successfully",
+      data: _.pick(user, ["_id", "userName", "email"]),
+    });
+  }
 })();
