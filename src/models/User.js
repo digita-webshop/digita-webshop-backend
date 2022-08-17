@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 const { emailValidator } = require("../validators/custom");
 
-const addressSchema = new mongoose.Schema({
-  country: { type: String, trim: true },
-  state: { type: String, trim: true },
-  city: { type: String, trim: true },
-  street: { type: String, trim: true },
-  postalCode: { type: String, minlength: 10, unique: true },
-});
+const addressSchema = new mongoose.Schema(
+  {
+    country: { type: String, trim: true },
+    state: { type: String, trim: true },
+    city: { type: String, trim: true },
+    street: { type: String, trim: true },
+    postalCode: { type: String, minlength: 10, unique: true },
+  },
+  { timestamps: true }
+);
 
 const orderSchema = new mongoose.Schema(
   {
