@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { emailValidator } = require("../validators/custom");
+const { emailValidator } = require("./../validators/custom");
 
 const addressSchema = new mongoose.Schema(
   {
@@ -8,14 +8,6 @@ const addressSchema = new mongoose.Schema(
     city: { type: String, trim: true },
     street: { type: String, trim: true },
     postalCode: { type: String, minlength: 10, unique: true },
-  },
-  { timestamps: true }
-);
-
-const orderSchema = new mongoose.Schema(
-  {
-    products: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
-    total: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
@@ -42,7 +34,7 @@ const userSchema = new mongoose.Schema(
     phone: { type: String, unique: true, minlength: 10 },
     image: { type: String },
     addresses: [addressSchema],
-    orders: [orderSchema],
+    orders: [{ type: mongoose.Types.ObjectId, ref: "Order" }],
     wishlist: [{ type: mongoose.Types.ObjectId, ref: "Product" }],
     role: {
       type: String,
