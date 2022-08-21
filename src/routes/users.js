@@ -8,13 +8,15 @@ const {
   getUsers,
 } = require("./../controllers/user");
 
+const fileUpload = require("./../middlewares/fileUpload");
+
 const { verifyAdmin } = require("./../middlewares/verifyToken");
 
 //UPDATE
-router.put("/:id", updateUser);
+router.put("/:id", fileUpload.single("image"), updateUser);
 
 //DELETE
-router.delete("/:id", deleteUser);
+router.delete("/:id", verifyAdmin, deleteUser);
 
 //GET
 router.get("/:id", getUser);
