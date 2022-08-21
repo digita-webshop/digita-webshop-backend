@@ -8,20 +8,24 @@ const {
   verifySuperAdmin,
 } = require("./../middlewares/verifyToken");
 
-const authRouter = require("./auth");
-const usersRouter = require("./users");
-const adminsRouter = require("./admins");
-const superAdminRouter = require("./superAdmin");
+const authRoutes = require("./auth");
+const userRoutes = require("./users");
+const adminRoutes = require("./admins");
+const articleRoutes = require("./articles");
+const productRoutes = require("./products");
+const superAdminRoutes = require("./superAdmin");
 
-router.use("/auth", authRouter);
-router.use("/user", verifyUser, usersRouter);
-router.use("/panel/admin", verifyUser, verifyAdmin, adminsRouter);
+router.use("/auth", authRoutes);
+router.use("/articles", articleRoutes);
+router.use("/products", productRoutes);
+router.use("/user", verifyUser, userRoutes);
+router.use("/panel/admin", verifyUser, verifyAdmin, adminRoutes);
 router.use(
   "/panel/superAdmin",
   verifyUser,
   verifyAdmin,
   verifySuperAdmin,
-  superAdminRouter
+  superAdminRoutes
 );
 
 router.use(error);
