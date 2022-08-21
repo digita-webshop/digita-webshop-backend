@@ -1,11 +1,13 @@
-function emailValidator(email) {
-  const emailRegex =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return emailRegex.test(email);
-}
+const validator = require("./validator");
 
-function numberItemsValidator(item, len) {
-  return item.length <= len;
-}
+module.exports = new (class extends validator {
+  emailValidator(email) {
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return emailRegex.test(email);
+  }
 
-module.exports = { emailValidator, numberItemsValidator };
+  numberItemsValidator(item, len) {
+    return item.length <= len;
+  }
+})();
