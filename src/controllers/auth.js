@@ -22,11 +22,6 @@ module.exports = new (class extends controller {
     const salt = await bcrypt.genSalt(10);
     newUser.password = await bcrypt.hash(newUser.password, salt);
 
-    newUser.image = req.file.path
-    newUser.addresses = []
-    newUser.orders = []
-    newUser.wishlist = []
-
     await newUser.save();
 
     this.response({

@@ -7,16 +7,11 @@ module.exports = new (class extends controller {
     const updatedUser = await this.User.findByIdAndUpdate(
       req.params.id,
       {
-        $set: {
-          userName: req.body.userName,
-          email: req.body.email,
-          password: req.body.password,
-          phone: req.body.phone,
-          image: req.body.image,
-        },
+        $set: req.body,
       },
       { new: true }
     );
+    updatedUser.image = req.file.path;
     if (!updatedUser) {
       return this.response({
         res,
