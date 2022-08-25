@@ -47,7 +47,13 @@ module.exports = new (class extends controller {
   }
 
   async getArticles(req, res, next) {
-    const articles = await this.Article.find().populate("reviews.userId");
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 6;
+    const articles = await this.Article.find()
+      .populate("reviews.userId")
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
 
     this.response({
       res,
@@ -58,7 +64,12 @@ module.exports = new (class extends controller {
 
   async getArticleReviews(req, res, next) {
     this.checkParamsId(req.params.id);
-    const article = await this.Article.findById(req.params.id);
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 20;
+    const article = await this.Article.findById(req.params.id)
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
 
     const list = await Promise.all(
       article.reviews.map((reviewer) => {
