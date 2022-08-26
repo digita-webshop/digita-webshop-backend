@@ -23,9 +23,13 @@ module.exports = new (class extends controller {
 
   async getWishlist(req, res, next) {
     const userId = req.user.id;
-    const userWithWishlist = await this.User.findById(userId).populate(
-      "wishlist"
-    );
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 6;
+    const userWithWishlist = await this.User.findById(userId)
+      .populate("wishlist")
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
 
     this.response({ res, data: userWithWishlist.wishlist });
   }
