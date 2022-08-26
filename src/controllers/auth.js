@@ -27,7 +27,7 @@ module.exports = new (class extends controller {
     this.response({
       res,
       message: "User created successfully",
-      data: _.pick(user, ["_id", "userName", "email"]),
+      data: _.pick(newUser, ["_id", "userName", "email"]),
     });
   }
 
@@ -55,10 +55,7 @@ module.exports = new (class extends controller {
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      config.get("jwt_key"),
-      {
-        expiresIn: "1h",
-      }
+      config.get("jwt_key")
     );
 
     const { password, role, ...otherDetails } = user._doc;
