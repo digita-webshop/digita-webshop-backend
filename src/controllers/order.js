@@ -2,9 +2,14 @@ const controller = require("./controller");
 
 module.exports = new (class extends controller {
   async getAllOrders(req, res, next) {
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 6;
     const orders = await this.Order.find()
       .populate("productId")
       .populate("userId")
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
 
     if (!orders) {
       return next(createError(404, "Orders not found"));
@@ -19,8 +24,13 @@ module.exports = new (class extends controller {
   async getOrdersByUserId(req, res, next) {
     this.checkParamsId(req.params.uid);
 
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 6;
     const userWithOrders = await this.User.findById(req.params.uid)
       .populate("orders")
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
 
     if (!userWithOrders || userWithOrders.orders.length === 0) {
       return next(createError(404, "User has no orders"));
