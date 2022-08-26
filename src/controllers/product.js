@@ -47,8 +47,13 @@ module.exports = new (class extends controller {
   }
 
   async getProducts(req, res, next) {
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 6;
     const products = await this.Product.find()
       .populate("reviews.userId")
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
 
     this.response({
       res,
@@ -60,7 +65,12 @@ module.exports = new (class extends controller {
   async getProductReviews(req, res, next) {
     this.checkParamsId(req.params.id);
 
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 20;
     const product = await this.Product.findById(req.params.id)
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
 
     const list = await Promise.all(
       product.reviews.map((reviewer) => {
