@@ -1,29 +1,26 @@
 const controller = require("./controller");
 
 module.exports = new (class extends controller {
-  async getOrderById(req, res, next) {
-    const orderId = req.params.oid;
-    this.checkParamsId(orderId);
-
-    const order = await this.Order.findById(orderId)
+  async getAllOrders(req, res, next) {
+    const orders = await this.Order.find()
       .populate("productId")
-      .populate("userId");
+      .populate("userId")
 
-    if (!order) {
-      return next(createError(404, "Order not found"));
+    if (!orders) {
+      return next(createError(404, "Orders not found"));
     }
     this.response({
       res,
-      message: "Order found",
-      data: order,
+      message: "Orders found",
+      data: orders,
     });
   }
 
   async getOrdersByUserId(req, res, next) {
-    const userId = req.params.uid;
-    this.checkParamsId(userId);
+    this.checkParamsId(req.params.uid);
 
-    const userWithOrders = await this.User.findById(userId).populate("orders");
+    const userWithOrders = await this.User.findById(req.params.uid)
+      .populate("orders")
 
     if (!userWithOrders || userWithOrders.orders.length === 0) {
       return next(createError(404, "User has no orders"));
@@ -46,14 +43,10 @@ module.exports = new (class extends controller {
     if (!user) {
       return next(createError(404, "User not found"));
     }
-
     try {
-      const sess = await mongoose.startSession();
-      sess.startTransaction();
-      await newOrder.save({ session: sess });
+      await newOrder.save();
       user.orders.push(newOrder);
-      await user.save({ session: sess });
-      await sess.commitTransaction();
+      await user.save();
     } catch (err) {
       return next(createError(500, "Adding order failed, please try again."));
     }
@@ -66,10 +59,9 @@ module.exports = new (class extends controller {
   }
 
   async deleteOrder(req, res, next) {
-    const orderId = req.params.oid;
-    this.checkParamsId(orderId);
+    this.checkParamsId(req.params.oid);
 
-    const order = await this.Order.findById(orderId).populate("userId");
+    const order = await this.Order.findById(req.params.oid).populate("userId");
 
     if (!order) {
       return next(createError(404, "Order not found"));
@@ -82,12 +74,9 @@ module.exports = new (class extends controller {
     }
 
     try {
-      const sess = await mongoose.startSession();
-      sess.startTransaction();
-      await order.remove({ session: sess });
+      await order.remove();
       order.userId.orders.pull(order);
-      await order.userId.save({ session: sess });
-      await sess.commitTransaction();
+      await order.userId.save();
     } catch (err) {
       return next(createError(500, "Deleting order failed, please try again."));
     }
