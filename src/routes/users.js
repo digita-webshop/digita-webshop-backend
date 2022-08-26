@@ -8,20 +8,42 @@ const {
   getUsers,
 } = require("./../controllers/user");
 
-const fileUpload = require("./../middlewares/fileUpload");
-
+const fileUpload = require("../middlewares/fileUpload");
 const { verifyAdmin } = require("./../middlewares/verifyToken");
 
-//UPDATE
+const {
+  addOrder,
+  deleteOrder,
+  getAllOrders,
+  getOrdersByUserId,
+} = require("./../controllers/order");
+
+//UPDATE USER
 router.put("/:id", fileUpload.single("image"), updateUser);
 
-//DELETE
+//DELETE USER
 router.delete("/:id", verifyAdmin, deleteUser);
 
-//GET
+//GET USER
 router.get("/:id", getUser);
 
-//GET ALL
+//GET ALL USERS
 router.get("/", verifyAdmin, getUsers);
+
+// GET ALL ORDERS
+router.get("/orders", verifyAdmin, getAllOrders);
+
+// GET ORDERS BY USER ID
+router.get("/my-orders/:uid", getOrdersByUserId);
+
+// VALIDATOR FOR ADD ORDER
+const validator = require("./../validators/order");
+
+// ADD ORDER
+router.post("/order", validator.orderValidator(), validator.validate, addOrder);
+
+// DELETE ORDER
+router.delete("/orders/:oid", deleteOrder);
+
 
 module.exports = router;
