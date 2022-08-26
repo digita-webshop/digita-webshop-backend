@@ -7,7 +7,7 @@ const addressSchema = new mongoose.Schema(
     state: { type: String, trim: true },
     city: { type: String, trim: true },
     street: { type: String, trim: true },
-    postalCode: { type: String, minlength: 10, unique: true },
+    postalCode: { type: String, minlength: 10 },
   },
   { timestamps: true }
 );
@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
       },
     },
     password: { type: String, required: true, minlength: 6 },
-    phone: { type: String, unique: true, minlength: 10 },
+    phone: { type: String, minlength: 10 },
     image: { type: String },
     addresses: [addressSchema],
     orders: [{ type: mongoose.Types.ObjectId, ref: "Order" }],
