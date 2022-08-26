@@ -5,6 +5,7 @@ const User = require("./../models/User");
 const Product = require("./../models/Product");
 const Article = require("./../models/Article");
 const Order = require("./../models/Order");
+const Cart = require("./../models/Cart");
 
 module.exports = class {
   constructor() {
@@ -13,6 +14,7 @@ module.exports = class {
     this.Product = Product;
     this.Article = Article;
     this.Order = Order;
+    this.Cart = Cart;
   }
 
   checkParamsId(id) {
