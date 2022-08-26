@@ -9,6 +9,7 @@ const {
 } = require("./../middlewares/verifyToken");
 
 const authRoutes = require("./auth");
+const cartRoutes = require("./cart");
 const userRoutes = require("./users");
 const adminRoutes = require("./admins");
 const articleRoutes = require("./articles");
@@ -16,6 +17,7 @@ const productRoutes = require("./products");
 const superAdminRoutes = require("./superAdmin");
 
 router.use("/auth", authRoutes);
+router.use("/cart", verifyUser, cartRoutes);
 router.use("/articles", articleRoutes);
 router.use("/products", productRoutes);
 router.use("/user", verifyUser, userRoutes);
