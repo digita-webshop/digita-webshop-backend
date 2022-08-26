@@ -7,11 +7,11 @@ module.exports = new (class extends controller {
     const updatedUser = await this.User.findByIdAndUpdate(
       req.params.id,
       {
-        $set: req.body,
+        $set: { ...req.body, image: req.file.path },
       },
       { new: true }
     );
-    updatedUser.image = req.file.path;
+
     if (!updatedUser) {
       return this.response({
         res,
@@ -60,7 +60,13 @@ module.exports = new (class extends controller {
   }
 
   async getUsers(req, res, next) {
-    const users = await this.User.find({}, "-password");
+    const pageNumber = parseInt(req.query.page) || 1;
+    const nPerPage = parseInt(req.query.limit) || 20;
+    const users = await this.User.find({ role: "user" }, "-password")
+      .sort({ _id: 1 })
+      .skip((pageNumber - 1) * nPerPage)
+      .limit(nPerPage);
+
     this.response({
       res,
       message: "Users found successfully",
