@@ -1,17 +1,32 @@
 const controller = require("./controller");
 const _ = require("lodash");
+const bcrypt = require("bcrypt");
 
 module.exports = new (class extends controller {
   async createAdmin(req, res, next) {
-    const admin = await this.User(
+    let newAdmin = await this.User.findOne({ email: req.body.email });
+    if (newAdmin) {
+      return this.response({
+        res,
+        code: 422,
+        message: "Admin exists already, please login instead.",
+      });
+    }
+
+    newAdmin = await this.User(
       _.pick(req.body, ["userName", "email", "password"])
     );
-    admin.role = "admin";
-    await admin.save();
+
+    newAdmin.role = "admin";
+    const salt = await bcrypt.genSalt(10);
+    newAdmin.password = await bcrypt.hash(newAdmin.password, salt);
+
+    await newAdmin.save();
+
     return this.response({
       res,
       message: "Admin created",
-      data: _.pick(admin, ["_id", "userName", "email"]),
+      data: _.pick(newAdmin, ["_id", "userName", "email"]),
     });
   }
 
