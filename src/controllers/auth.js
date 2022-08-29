@@ -55,7 +55,8 @@ module.exports = new (class extends controller {
 
     const token = jwt.sign(
       { id: user._id, role: user.role },
-      config.get("jwt_key")
+      config.get("jwt_key"),
+      { expiresIn: "5d" }
     );
 
     const { password, role, ...otherDetails } = user._doc;
