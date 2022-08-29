@@ -9,13 +9,13 @@ Developed by [Node.js](https://nodejs.org/) , [Express.js](https://expressjs.com
 
 </div>
 
-## 🔧Technologies
+## 🔧 Technologies
 ![Node.js](https://img.shields.io/badge/-Node.js-020f26?style=for-the-badge&logo=node.js)&nbsp;
 ![Express.js](https://img.shields.io/badge/-Express.js-020f26?style=for-the-badge&logo=express)&nbsp;
 ![MongoDB](https://img.shields.io/badge/-MongoDB-020f26?style=for-the-badge&logo=mongoDB)&nbsp;
 
 
-## 🚀Getting Started
+## 🚀 Getting Started
 
 1. Clone the project
   ```bash
@@ -36,7 +36,7 @@ Developed by [Node.js](https://nodejs.org/) , [Express.js](https://expressjs.com
   yarn dev
   ```
   
-## 🤝Contributing
+## 🤝 Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
