@@ -55,7 +55,7 @@ module.exports = new (class extends controller {
     this.response({
       res,
       message: "User found successfully",
-      data: _.pick(user, ["_id", "userName", "email"]),
+      data: _.omit(user, ["password"]),
     });
   }
 
