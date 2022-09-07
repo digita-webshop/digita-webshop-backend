@@ -14,7 +14,7 @@ const fileUpload = require("../middlewares/fileUpload");
 const { verifyAdmin } = require("./../middlewares/verifyToken");
 
 //CREATE PRODUCT
-router.post("/", verifyAdmin, fileUpload.single("image"), createProduct);
+router.post("/", verifyAdmin, createProduct);
 
 //UPDATE PRODUCT
 router.put("/:id", verifyAdmin, fileUpload.single("image"), updateProduct);

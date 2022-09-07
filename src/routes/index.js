@@ -8,6 +8,7 @@ const adminRoutes = require("./admins");
 const articleRoutes = require("./articles");
 const productRoutes = require("./products");
 const superAdminRoutes = require("./superAdmin");
+const fileRoutes = require("./superAdmin");
 
 const {
   verifyUser,
@@ -37,6 +38,9 @@ router.use("/admins", verifyAdmin, adminRoutes);
 
 // SUPER ADMIN routes
 router.use("/superAdmin", verifySuperAdmin, superAdminRoutes);
+
+// FILE UPLOAD routes
+router.use("/file", verifySuperAdmin, fileRoutes);
 
 // Error middleware
 router.use(error);
