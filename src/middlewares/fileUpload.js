@@ -23,6 +23,6 @@ const fileUpload = multer({
     let error = isValid ? null : new Error("Invalid mime type!");
     cb(error, isValid);
   },
-}).single("image");
+});
 
 module.exports = fileUpload;
