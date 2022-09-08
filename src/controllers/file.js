@@ -44,6 +44,7 @@ module.exports = new (class extends controller {
       res,
       message,
       data: fileName,
+      code: status,
     });
   }
 })();
