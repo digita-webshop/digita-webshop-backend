@@ -7,7 +7,7 @@ module.exports = new (class extends validator {
     return emailRegex.test(email);
   }
 
-  numberItemsValidator(item, len) {
-    return item.length <= len;
+  numberItemsValidator(len) {
+    return this.length <= len;
   }
 })();
