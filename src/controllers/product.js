@@ -24,7 +24,7 @@ module.exports = new (class extends controller {
     try {
       const updatedProduct = await this.Product.findByIdAndUpdate(
         req.params.id,
-        { $set: { image: req.file.path, ...req.body } },
+        { $set: { ...req.body } },
         { new: true }
       );
     } catch (err) {

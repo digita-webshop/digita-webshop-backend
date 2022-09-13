@@ -9,7 +9,7 @@ module.exports = new (class extends controller {
       const updatedUser = await this.User.findByIdAndUpdate(
         req.params.id,
         {
-          $set: { ...req.body, image: req.file.path },
+          $set: { ...req.body },
         },
         { new: true }
       );

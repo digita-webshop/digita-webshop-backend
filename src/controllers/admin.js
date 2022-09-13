@@ -8,7 +8,9 @@ module.exports = new (class extends controller {
     try {
       let newAdmin = await this.User.findOne({ email: req.body.email });
     } catch (err) {
-      return next(createError(500, "Something went wrong, could not find a Admin."));
+      return next(
+        createError(500, "Something went wrong, could not find a Admin.")
+      );
     }
 
     if (newAdmin) {
@@ -17,7 +19,7 @@ module.exports = new (class extends controller {
         code: 422,
         message: "Admin exists already, please login instead.",
       });
-    } 
+    }
 
     newAdmin = await this.User(
       _.pick(req.body, ["userName", "email", "password"])
@@ -41,7 +43,7 @@ module.exports = new (class extends controller {
     const updatedAdmin = await this.User.findByIdAndUpdate(
       req.params.id,
       {
-        $set: { ...req.body, image: req.file.path },
+        $set: { ...req.body },
       },
       { new: true }
     );

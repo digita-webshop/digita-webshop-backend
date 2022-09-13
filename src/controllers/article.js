@@ -24,7 +24,7 @@ module.exports = new (class extends controller {
     try {
       const updatedArticle = await this.Article.findByIdAndUpdate(
         req.params.id,
-        { $set: { image: req.file.path, ...req.body } },
+        { $set: { ...req.body } },
         { new: true }
       );
     } catch (err) {
@@ -110,7 +110,9 @@ module.exports = new (class extends controller {
         try {
           return this.User.findById(reviewer.userId);
         } catch (err) {
-          return next(createError(500, "Fetching user failed, please try again."));
+          return next(
+            createError(500, "Fetching user failed, please try again.")
+          );
         }
       })
     );
