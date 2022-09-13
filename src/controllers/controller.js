@@ -25,6 +25,7 @@ module.exports = class {
 
   response({ res, message, code = 200, data = {} }) {
     res.status(code).json({
+      code,
       message,
       data,
     });
