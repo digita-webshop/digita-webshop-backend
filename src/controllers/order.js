@@ -1,15 +1,20 @@
 const controller = require("./controller");
+const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async getAllOrders(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
-    const orders = await this.Order.find()
-      .populate("productId")
-      .populate("userId")
-      .sort({ _id: 1 })
-      .skip((pageNumber - 1) * nPerPage)
-      .limit(nPerPage);
+    try {
+      const orders = await this.Order.find()
+        .populate("productId")
+        .populate("userId")
+        .sort({ _id: 1 })
+        .skip((pageNumber - 1) * nPerPage)
+        .limit(nPerPage);
+    } catch (err) {
+      return next(createError(500, "Could not get orders, please try again."));
+    }
 
     if (!orders) {
       return next(createError(404, "Orders not found"));
@@ -26,11 +31,15 @@ module.exports = new (class extends controller {
 
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
-    const userWithOrders = await this.User.findById(req.params.uid)
-      .populate("orders")
-      .sort({ _id: 1 })
-      .skip((pageNumber - 1) * nPerPage)
-      .limit(nPerPage);
+    try {
+      const userWithOrders = await this.User.findById(req.params.uid)
+        .populate("orders")
+        .sort({ _id: 1 })
+        .skip((pageNumber - 1) * nPerPage)
+        .limit(nPerPage);
+    } catch (err) {
+      return next(createError(500, "Could not get orders, please try again."));
+    }
 
     if (!userWithOrders || userWithOrders.orders.length === 0) {
       return next(createError(404, "User has no orders"));
@@ -48,7 +57,11 @@ module.exports = new (class extends controller {
       userId: req.user.id,
     });
 
-    const user = await this.User.findById(req.user.id);
+    try {
+      const user = await this.User.findById(req.user.id);
+    } catch (err) {
+      return next(createError(500, "Could not find user, please try again."));
+    }
 
     if (!user) {
       return next(createError(404, "User not found"));
@@ -70,8 +83,15 @@ module.exports = new (class extends controller {
 
   async deleteOrder(req, res, next) {
     this.checkParamsId(req.params.oid);
-
-    const order = await this.Order.findById(req.params.oid).populate("userId");
+    try {
+      const order = await this.Order.findById(req.params.oid).populate(
+        "userId"
+      );
+    } catch (err) {
+      return next(
+        createError(500, "Could not delete order, please try again.")
+      );
+    }
 
     if (!order) {
       return next(createError(404, "Order not found"));

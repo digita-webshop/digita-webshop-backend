@@ -1,17 +1,23 @@
 const controller = require("./controller");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
+const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async createAdmin(req, res, next) {
-    let newAdmin = await this.User.findOne({ email: req.body.email });
+    try {
+      let newAdmin = await this.User.findOne({ email: req.body.email });
+    } catch (err) {
+      return next(createError(500, "Something went wrong, could not find a Admin."));
+    }
+
     if (newAdmin) {
       return this.response({
         res,
         code: 422,
         message: "Admin exists already, please login instead.",
       });
-    }
+    } 
 
     newAdmin = await this.User(
       _.pick(req.body, ["userName", "email", "password"])

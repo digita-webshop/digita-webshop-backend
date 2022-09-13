@@ -1,16 +1,21 @@
 const controller = require("./controller");
 const _ = require("lodash");
+const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async updateUser(req, res, next) {
     this.checkParamsId(req.params.id);
-    const updatedUser = await this.User.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: { ...req.body, image: req.file.path },
-      },
-      { new: true }
-    );
+    try {
+      const updatedUser = await this.User.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: { ...req.body, image: req.file.path },
+        },
+        { new: true }
+      );
+    } catch (err) {
+      return next(createError(500, "Updating user failed, please try again."));
+    }
 
     if (!updatedUser) {
       return this.response({
@@ -28,7 +33,11 @@ module.exports = new (class extends controller {
 
   async deleteUser(req, res, next) {
     this.checkParamsId(req.params.id);
-    const user = await this.User.findByIdAndDelete(req.params.id);
+    try {
+      const user = await this.User.findByIdAndDelete(req.params.id);
+    } catch (err) {
+      return next(createError(500, "Deleting user failed, please try again."));
+    }
     if (!user) {
       return this.response({
         res,
@@ -45,7 +54,13 @@ module.exports = new (class extends controller {
 
   async getUser(req, res, next) {
     this.checkParamsId(req.params.id);
-    const user = await this.User.findById(req.params.id);
+    try {
+      const user = await this.User.findById(req.params.id);
+    } catch (err) {
+      return next(
+        createError(500, "Fetching user failed, please try again later.")
+      );
+    }
     if (!user)
       return this.response({
         res,
@@ -62,10 +77,16 @@ module.exports = new (class extends controller {
   async getUsers(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 20;
-    const users = await this.User.find({ role: "user" }, "-password")
-      .sort({ _id: 1 })
-      .skip((pageNumber - 1) * nPerPage)
-      .limit(nPerPage);
+    try {
+      const users = await this.User.find({ role: "user" }, "-password")
+        .sort({ _id: 1 })
+        .skip((pageNumber - 1) * nPerPage)
+        .limit(nPerPage);
+    } catch (err) {
+      return next(
+        createError(500, "Fetching users failed, please try again later.")
+      );
+    }
 
     this.response({
       res,

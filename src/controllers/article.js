@@ -1,10 +1,16 @@
 const controller = require("./controller");
+const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async createArticle(req, res, next) {
     const newArticle = new this.Article(req.body);
-    newArticle.image = req.file.path;
-    const savedArticle = await newArticle.save();
+    try {
+      const savedArticle = await newArticle.save();
+    } catch (err) {
+      return next(
+        createError(500, "Could not create article, please try again.")
+      );
+    }
 
     this.response({
       res,
@@ -15,11 +21,17 @@ module.exports = new (class extends controller {
 
   async updateArticle(req, res, next) {
     this.checkParamsId(req.params.id);
-    const updatedArticle = await this.Article.findByIdAndUpdate(
-      req.params.id,
-      { $set: { image: req.file.path, ...req.body } },
-      { new: true }
-    );
+    try {
+      const updatedArticle = await this.Article.findByIdAndUpdate(
+        req.params.id,
+        { $set: { image: req.file.path, ...req.body } },
+        { new: true }
+      );
+    } catch (err) {
+      return next(
+        createError(500, "Could not update article, please try again.")
+      );
+    }
 
     this.response({
       res,
@@ -30,14 +42,24 @@ module.exports = new (class extends controller {
 
   async deleteArticle(req, res, next) {
     this.checkParamsId(req.params.id);
-    await this.Article.findByIdAndDelete(req.params.id);
+    try {
+      await this.Article.findByIdAndDelete(req.params.id);
+    } catch (err) {
+      return next(
+        createError(500, "Could not delete article, please try again.")
+      );
+    }
 
     this.response({ res, message: "Article deleted successfully" });
   }
 
   async getArticle(req, res, next) {
     this.checkParamsId(req.params.id);
-    const article = await this.Article.findById(req.params.id);
+    try {
+      const article = await this.Article.findById(req.params.id);
+    } catch (err) {
+      return next(createError(500, "Could not get article, please try again."));
+    }
 
     this.response({
       res,
@@ -49,11 +71,17 @@ module.exports = new (class extends controller {
   async getArticles(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
-    const articles = await this.Article.find()
-      .populate("reviews.userId")
-      .sort({ _id: 1 })
-      .skip((pageNumber - 1) * nPerPage)
-      .limit(nPerPage);
+    try {
+      const articles = await this.Article.find()
+        .populate("reviews.userId")
+        .sort({ _id: 1 })
+        .skip((pageNumber - 1) * nPerPage)
+        .limit(nPerPage);
+    } catch (err) {
+      return next(
+        createError(500, "Could not get articles, please try again.")
+      );
+    }
 
     this.response({
       res,
@@ -66,14 +94,24 @@ module.exports = new (class extends controller {
     this.checkParamsId(req.params.id);
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 20;
-    const article = await this.Article.findById(req.params.id)
-      .sort({ _id: 1 })
-      .skip((pageNumber - 1) * nPerPage)
-      .limit(nPerPage);
+    try {
+      const article = await this.Article.findById(req.params.id)
+        .sort({ _id: 1 })
+        .skip((pageNumber - 1) * nPerPage)
+        .limit(nPerPage);
+    } catch (err) {
+      return next(
+        createError(500, "Fetching article reviews failed, please try again.")
+      );
+    }
 
     const list = await Promise.all(
       article.reviews.map((reviewer) => {
-        return this.User.findById(reviewer.userId);
+        try {
+          return this.User.findById(reviewer.userId);
+        } catch (err) {
+          return next(createError(500, "Fetching user failed, please try again."));
+        }
       })
     );
 
