@@ -10,14 +10,13 @@ const {
   updateArticle,
 } = require("../controllers/article");
 
-const fileUpload = require("../middlewares/fileUpload");
 const { verifyAdmin } = require("./../middlewares/verifyToken");
 
 //CREATE ARTICLE
-router.post("/", verifyAdmin, fileUpload.single("image"), createArticle);
+router.post("/", verifyAdmin, createArticle);
 
 //UPDATE ARTICLE
-router.put("/:id", verifyAdmin, fileUpload.single("image"), updateArticle);
+router.put("/:id", verifyAdmin, updateArticle);
 
 //DELETE ARTICLE
 router.delete("/:id", verifyAdmin, deleteArticle);

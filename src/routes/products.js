@@ -10,14 +10,13 @@ const {
   updateProduct,
 } = require("../controllers/product");
 
-const fileUpload = require("../middlewares/fileUpload");
 const { verifyAdmin } = require("./../middlewares/verifyToken");
 
 //CREATE PRODUCT
-router.post("/", verifyAdmin, fileUpload.single("image"), createProduct);
+router.post("/", verifyAdmin, createProduct);
 
 //UPDATE PRODUCT
-router.put("/:id", verifyAdmin, fileUpload.single("image"), updateProduct);
+router.put("/:id", verifyAdmin, updateProduct);
 
 //DELETE PRODUCT
 router.delete("/:id", verifyAdmin, deleteProduct);

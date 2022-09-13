@@ -8,7 +8,6 @@ const {
   getUsers,
 } = require("./../controllers/user");
 
-const fileUpload = require("../middlewares/fileUpload");
 const { verifyAdmin } = require("./../middlewares/verifyToken");
 const { wish, unwish, getWishlist } = require("./../controllers/wishlist");
 
@@ -20,7 +19,7 @@ const {
 } = require("./../controllers/order");
 
 //UPDATE USER
-router.put("/:id", fileUpload.single("image"), updateUser);
+router.put("/:id", updateUser);
 
 //DELETE USER
 router.delete("/:id", verifyAdmin, deleteUser);
