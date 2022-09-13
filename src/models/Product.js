@@ -55,6 +55,7 @@ const ProductSchema = new mongoose.Schema(
     shortDescription: { type: String, trim: true },
     fullDescription: { type: String, trim: true },
     reviews: [reviewSchema],
+    brand: { type: String, trim: true },
   },
   { timestamps: true }
 );

@@ -15,6 +15,7 @@ const ArticleSchema = new mongoose.Schema(
     description: { type: String, trim: true },
     writer: { type: String, trim: true },
     reviews: [reviewSchema],
+    category: { type: String, trim: true },
   },
   { timestamps: true }
 );
