@@ -5,8 +5,9 @@ const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async createAdmin(req, res, next) {
+    let newAdmin;
     try {
-      let newAdmin = await this.User.findOne({ email: req.body.email });
+      newAdmin = await this.User.findOne({ email: req.body.email });
     } catch (err) {
       return next(
         createError(500, "Something went wrong, could not find a Admin.")
@@ -26,10 +27,22 @@ module.exports = new (class extends controller {
     );
 
     newAdmin.role = "admin";
-    const salt = await bcrypt.genSalt(10);
-    newAdmin.password = await bcrypt.hash(newAdmin.password, salt);
+    try {
+      const salt = await bcrypt.genSalt(10);
+      newAdmin.password = await bcrypt.hash(newAdmin.password, salt);
+    } catch (err) {
+      return next(
+        createError(500, "Something went wrong, could not create a Admin.")
+      );
+    }
 
-    await newAdmin.save();
+    try {
+      await newAdmin.save();
+    } catch (err) {
+      return next(
+        createError(500, "Something went wrong, could not create a Admin.")
+      );
+    }
 
     return this.response({
       res,
@@ -40,14 +53,20 @@ module.exports = new (class extends controller {
 
   async updateAdmin(req, res, next) {
     this.checkParamsId(req.params.id);
-    const updatedAdmin = await this.User.findByIdAndUpdate(
-      req.params.id,
-      {
-        $set: { ...req.body },
-      },
-      { new: true }
-    );
-
+    let updatedAdmin;
+    try {
+      updatedAdmin = await this.User.findByIdAndUpdate(
+        req.params.id,
+        {
+          $set: { ...req.body },
+        },
+        { new: true }
+      );
+    } catch (err) {
+      return next(
+        createError(500, "Something went wrong, could not update admin.")
+      );
+    }
     if (!updatedAdmin) {
       return this.response({
         res,
@@ -64,7 +83,14 @@ module.exports = new (class extends controller {
 
   async deleteAdmin(req, res, next) {
     this.checkParamsId(req.params.id);
-    const admin = await this.User.findByIdAndDelete(req.params.id);
+    let admin;
+    try {
+      admin = await this.User.findByIdAndDelete(req.params.id);
+    } catch (err) {
+      return next(
+        createError(500, "Something went wrong, could not delete admin.")
+      );
+    }
     if (!admin) {
       return this.response({
         res,
@@ -81,7 +107,14 @@ module.exports = new (class extends controller {
 
   async getAdmin(req, res, next) {
     this.checkParamsId(req.params.id);
-    const admin = await this.User.findById(req.params.id);
+    let admin;
+    try {
+      admin = await this.User.findById(req.params.id);
+    } catch (err) {
+      return next(
+        createError(500, "Something went wrong, could not find admin.")
+      );
+    }
     if (!admin)
       return this.response({
         res,
@@ -96,7 +129,14 @@ module.exports = new (class extends controller {
   }
 
   async getAdmins(req, res, next) {
-    const admins = await this.User.find({ role: "admin" }, "-password");
+    let admins;
+    try {
+      admins = await this.User.find({ role: "admin" }, "-password");
+    } catch (err) {
+      return next(
+        createError(500, "Something went wrong, could not find admins.")
+      );
+    }
     this.response({
       res,
       message: "Admins found successfully",
