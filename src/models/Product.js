@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { numberItemsValidator } = require("./../validators/custom");
 
 const gallerySchema = new mongoose.Schema(
   {
@@ -27,7 +26,9 @@ const ProductSchema = new mongoose.Schema(
       {
         type: gallerySchema,
         validate: {
-          validator: numberItemsValidator.bind(6),
+          validator: function (v) {
+            return v && v.length <= 6;
+          },
           message: "Gallery can be a maximum of 6 images.",
         },
       },
@@ -40,7 +41,9 @@ const ProductSchema = new mongoose.Schema(
     colors: {
       type: [String],
       validate: {
-        validator: numberItemsValidator.bind(3),
+        validator: function (v) {
+          return v && v.length <= 3;
+        },
         message: "Colors can be a maximum of 3 items.",
       },
     },
@@ -48,7 +51,9 @@ const ProductSchema = new mongoose.Schema(
     tags: {
       type: [String],
       validate: {
-        validator: numberItemsValidator.bind(3),
+        validator: function (v) {
+          return v && v.length <= 3;
+        },
         message: "tags can be a maximum of 3 items.",
       },
     },

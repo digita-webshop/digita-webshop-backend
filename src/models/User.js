@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { emailValidator } = require("./../validators/custom");
 
 const addressSchema = new mongoose.Schema(
   {
@@ -25,10 +24,6 @@ const userSchema = new mongoose.Schema(
       required: true,
       unique: true,
       trim: true,
-      validate: {
-        validator: emailValidator,
-        message: "Invalid email format",
-      },
     },
     password: { type: String, required: true, minlength: 6 },
     phone: { type: String, minlength: 10 },
