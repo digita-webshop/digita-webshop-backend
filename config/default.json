@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "PORT": "8080",
   "db": {
-    "MONGO_URI": "mongodb+srv://digita:digitaWebshop@digita-webshop.w2s0dit.mongodb.net/?retryWrites=true&w=majority"
+    "MONGO_URI": "mongodb+srv://digita:digitaWebShop@digita-webshop.a8e7xyg.mongodb.net/test"
   },
   "jwt_key": "Digita_WebShop_J3on_Web_Token"
 }
