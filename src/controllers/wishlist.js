@@ -43,8 +43,9 @@ module.exports = new (class extends controller {
     const userId = req.user.id;
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
+    let userWithWishlist;
     try {
-      const userWithWishlist = await this.User.findById(userId)
+      userWithWishlist = await this.User.findById(userId)
         .populate("wishlist")
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)

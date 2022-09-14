@@ -5,8 +5,9 @@ module.exports = new (class extends controller {
   async getAllOrders(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
+    let orders;
     try {
-      const orders = await this.Order.find()
+      orders = await this.Order.find()
         .populate("productId")
         .populate("userId")
         .sort({ _id: 1 })
@@ -31,8 +32,9 @@ module.exports = new (class extends controller {
 
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
+    let userWithOrders;
     try {
-      const userWithOrders = await this.User.findById(req.params.uid)
+      userWithOrders = await this.User.findById(req.params.uid)
         .populate("orders")
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
@@ -56,9 +58,9 @@ module.exports = new (class extends controller {
       ...req.body,
       userId: req.user.id,
     });
-
+    let user;
     try {
-      const user = await this.User.findById(req.user.id);
+      user = await this.User.findById(req.user.id);
     } catch (err) {
       return next(createError(500, "Could not find user, please try again."));
     }
@@ -83,8 +85,9 @@ module.exports = new (class extends controller {
 
   async deleteOrder(req, res, next) {
     this.checkParamsId(req.params.oid);
+    let order;
     try {
-      const order = await this.Order.findById(req.params.oid).populate(
+      order = await this.Order.findById(req.params.oid).populate(
         "userId"
       );
     } catch (err) {

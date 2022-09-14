@@ -4,8 +4,9 @@ const createError = require("../utils/httpError");
 module.exports = new (class extends controller {
   async createProduct(req, res, next) {
     const newProduct = new this.Product(req.body);
+    let savedProduct;
     try {
-      const savedProduct = await newProduct.save();
+      savedProduct = await newProduct.save();
     } catch (err) {
       return next(
         createError(500, "Could not create product, please try again.")
@@ -21,8 +22,9 @@ module.exports = new (class extends controller {
 
   async updateProduct(req, res, next) {
     this.checkParamsId(req.params.id);
+    let updatedProduct;
     try {
-      const updatedProduct = await this.Product.findByIdAndUpdate(
+      updatedProduct = await this.Product.findByIdAndUpdate(
         req.params.id,
         { $set: { ...req.body } },
         { new: true }
@@ -55,8 +57,9 @@ module.exports = new (class extends controller {
 
   async getProduct(req, res, next) {
     this.checkParamsId(req.params.id);
+    let product;
     try {
-      const product = await this.Product.findById(req.params.id);
+      product = await this.Product.findById(req.params.id);
     } catch (err) {
       return next(createError(500, "Could not get product, please try again."));
     }
@@ -71,8 +74,9 @@ module.exports = new (class extends controller {
   async getProducts(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
+    let products;
     try {
-      const products = await this.Product.find()
+      products = await this.Product.find()
         .populate("reviews.userId")
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
@@ -94,8 +98,9 @@ module.exports = new (class extends controller {
 
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 20;
+    let product;
     try {
-      const product = await this.Product.findById(req.params.id)
+      product = await this.Product.findById(req.params.id)
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);

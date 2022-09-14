@@ -4,8 +4,9 @@ const createError = require("../utils/httpError");
 module.exports = new (class extends controller {
   async createArticle(req, res, next) {
     const newArticle = new this.Article(req.body);
+    let savedArticle;
     try {
-      const savedArticle = await newArticle.save();
+      savedArticle = await newArticle.save();
     } catch (err) {
       return next(
         createError(500, "Could not create article, please try again.")
@@ -21,8 +22,9 @@ module.exports = new (class extends controller {
 
   async updateArticle(req, res, next) {
     this.checkParamsId(req.params.id);
+    let updatedArticle;
     try {
-      const updatedArticle = await this.Article.findByIdAndUpdate(
+      updatedArticle = await this.Article.findByIdAndUpdate(
         req.params.id,
         { $set: { ...req.body } },
         { new: true }
@@ -55,8 +57,9 @@ module.exports = new (class extends controller {
 
   async getArticle(req, res, next) {
     this.checkParamsId(req.params.id);
+    let article;
     try {
-      const article = await this.Article.findById(req.params.id);
+      article = await this.Article.findById(req.params.id);
     } catch (err) {
       return next(createError(500, "Could not get article, please try again."));
     }
@@ -71,8 +74,9 @@ module.exports = new (class extends controller {
   async getArticles(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
+    let articles;
     try {
-      const articles = await this.Article.find()
+      articles = await this.Article.find()
         .populate("reviews.userId")
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
@@ -94,8 +98,9 @@ module.exports = new (class extends controller {
     this.checkParamsId(req.params.id);
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 20;
+    let article;
     try {
-      const article = await this.Article.findById(req.params.id)
+      article = await this.Article.findById(req.params.id)
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);

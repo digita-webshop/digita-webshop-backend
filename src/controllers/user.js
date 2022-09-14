@@ -5,8 +5,9 @@ const createError = require("../utils/httpError");
 module.exports = new (class extends controller {
   async updateUser(req, res, next) {
     this.checkParamsId(req.params.id);
+    let updatedUser;
     try {
-      const updatedUser = await this.User.findByIdAndUpdate(
+      updatedUser = await this.User.findByIdAndUpdate(
         req.params.id,
         {
           $set: { ...req.body },
@@ -33,8 +34,9 @@ module.exports = new (class extends controller {
 
   async deleteUser(req, res, next) {
     this.checkParamsId(req.params.id);
+    let user;
     try {
-      const user = await this.User.findByIdAndDelete(req.params.id);
+      user = await this.User.findByIdAndDelete(req.params.id);
     } catch (err) {
       return next(createError(500, "Deleting user failed, please try again."));
     }
@@ -54,8 +56,9 @@ module.exports = new (class extends controller {
 
   async getUser(req, res, next) {
     this.checkParamsId(req.params.id);
+    let user;
     try {
-      const user = await this.User.findById(req.params.id);
+      user = await this.User.findById(req.params.id);
     } catch (err) {
       return next(
         createError(500, "Fetching user failed, please try again later.")
@@ -77,8 +80,9 @@ module.exports = new (class extends controller {
   async getUsers(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 20;
+    let users;
     try {
-      const users = await this.User.find({ role: "user" }, "-password")
+      users = await this.User.find({ role: "user" }, "-password")
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);

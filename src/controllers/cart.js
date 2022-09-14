@@ -4,9 +4,9 @@ module.exports = new (class extends controller {
   async addToCart(req, res) {
     const { productId, quantity, name, price } = req.body;
     const userId = req.user.id;
-
+    let cart;
     try {
-      let cart = await this.Cart.findOne({ userId });
+      cart = await this.Cart.findOne({ userId });
     } catch (err) {
       return next(createError(500, "Could not find cart, please try again."));
     }
@@ -55,10 +55,9 @@ module.exports = new (class extends controller {
 
   async getCart(req, res) {
     const userId = req.user.id;
+    let cart;
     try {
-      const cart = await this.Cart.findOne({ userId }).populate(
-        "products.productId"
-      );
+      cart = await this.Cart.findOne({ userId }).populate("products.productId");
     } catch (err) {
       return next(createError(500, "Could not find cart, please try again."));
     }

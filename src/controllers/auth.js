@@ -7,8 +7,9 @@ const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async signup(req, res) {
+    let newUser;
     try {
-      let newUser = await this.User.findOne({ email: req.body.email });
+      newUser = await this.User.findOne({ email: req.body.email });
     } catch (err) {
       return next(
         createError(500, "Something went wrong, could not find a User.")
@@ -48,8 +49,9 @@ module.exports = new (class extends controller {
   }
 
   async login(req, res) {
+    let user;
     try {
-      const user = await this.User.findOne({ email: req.body.email });
+      user = await this.User.findOne({ email: req.body.email });
     } catch (err) {
       return next(
         createError(500, "Logging in failed, please try again later.")
@@ -62,12 +64,9 @@ module.exports = new (class extends controller {
         message: "User not found!",
       });
     }
-
+    let isValidPassword;
     try {
-      const isValidPassword = await bcrypt.compare(
-        req.body.password,
-        user.password
-      );
+      isValidPassword = await bcrypt.compare(req.body.password, user.password);
     } catch (err) {
       return next(
         createError(
@@ -83,9 +82,9 @@ module.exports = new (class extends controller {
         message: "Wrong password or username!",
       });
     }
-
+    let token;
     try {
-      const token = jwt.sign(
+      token = jwt.sign(
         { id: user._id, role: user.role },
         config.get("jwt_key"),
         { expiresIn: "5d" }
