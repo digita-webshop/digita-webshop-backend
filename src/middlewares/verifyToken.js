@@ -20,33 +20,45 @@ const verifyToken = (req, res, next) => {
 };
 
 const verifyUser = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.id === req.params.id || req.user.role) {
-      next();
-    } else {
-      return next(createError(403, "You are not authorized!"));
-    }
-  });
+  try {
+    verifyToken(req, res, () => {
+      if (req.user.id === req.params.id || req.user.role) {
+        next();
+      } else {
+        return next(createError(403, "You are not authorized!"));
+      }
+    });
+  } catch (err) {
+    return next(createError(403, "Authentication failed!"));
+  }
 };
 
 const verifyAdmin = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.role !== "user") {
-      next();
-    } else {
-      return next(createError(403, "You are not authorized!"));
-    }
-  });
+  try {
+    verifyToken(req, res, () => {
+      if (req.user.role !== "user") {
+        next();
+      } else {
+        return next(createError(403, "You are not authorized!"));
+      }
+    });
+  } catch (err) {
+    return next(createError(403, "Authentication failed!"));
+  }
 };
 
 const verifySuperAdmin = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.role === "superAdmin") {
-      next();
-    } else {
-      return next(createError(403, "You are not authorized!"));
-    }
-  });
+  try {
+    verifyToken(req, res, () => {
+      if (req.user.role === "superAdmin") {
+        next();
+      } else {
+        return next(createError(403, "You are not authorized!"));
+      }
+    });
+  } catch (err) {
+    return next(createError(403, "Authentication failed!"));
+  }
 };
 
 module.exports = {
