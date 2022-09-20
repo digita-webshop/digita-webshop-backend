@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const controller = require("./controller");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
@@ -52,7 +53,9 @@ module.exports = new (class extends controller {
   }
 
   async updateAdmin(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let updatedAdmin;
     try {
       updatedAdmin = await this.User.findByIdAndUpdate(
@@ -82,7 +85,9 @@ module.exports = new (class extends controller {
   }
 
   async deleteAdmin(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let admin;
     try {
       admin = await this.User.findByIdAndDelete(req.params.id);
@@ -106,7 +111,9 @@ module.exports = new (class extends controller {
   }
 
   async getAdmin(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let admin;
     try {
       admin = await this.User.findById(req.params.id);

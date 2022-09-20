@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const controller = require("./controller");
 const createError = require("../utils/httpError");
 
@@ -28,7 +29,9 @@ module.exports = new (class extends controller {
   }
 
   async getOrdersByUserId(req, res, next) {
-    this.checkParamsId(req.params.uid);
+    if (!mongoose.Types.ObjectId.isValid(req.params.uid)) {
+      return next(createError(400, "Invalid id"));
+    }
 
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
@@ -49,7 +52,7 @@ module.exports = new (class extends controller {
     this.response({
       res,
       message: "User orders found",
-      data: userWithOrders.orders.map((order) => order.populate("productId")),
+      data: userWithOrders.orders,
     });
   }
 
@@ -84,12 +87,12 @@ module.exports = new (class extends controller {
   }
 
   async deleteOrder(req, res, next) {
-    this.checkParamsId(req.params.oid);
+    if (!mongoose.Types.ObjectId.isValid(req.params.oid)) {
+      return next(createError(400, "Invalid id"));
+    }
     let order;
     try {
-      order = await this.Order.findById(req.params.oid).populate(
-        "userId"
-      );
+      order = await this.Order.findById(req.params.oid).populate("userId");
     } catch (err) {
       return next(
         createError(500, "Could not delete order, please try again.")

@@ -1,10 +1,13 @@
+const mongoose = require("mongoose");
 const controller = require("./controller");
 const _ = require("lodash");
 const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async updateUser(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let updatedUser;
     try {
       updatedUser = await this.User.findByIdAndUpdate(
@@ -33,7 +36,9 @@ module.exports = new (class extends controller {
   }
 
   async deleteUser(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let user;
     try {
       user = await this.User.findByIdAndDelete(req.params.id);
@@ -55,7 +60,9 @@ module.exports = new (class extends controller {
   }
 
   async getUser(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let user;
     try {
       user = await this.User.findById(req.params.id);

@@ -1,9 +1,12 @@
+const mongoose = require("mongoose");
 const controller = require("./controller");
 const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
   async wish(req, res, next) {
-    this.checkParamsId(req.params.productId);
+    if (!mongoose.Types.ObjectId.isValid(req.params.productId)) {
+      return next(createError(400, "Invalid id"));
+    }
     const userId = req.user.id;
     const productId = req.params.productId;
     try {
@@ -20,7 +23,9 @@ module.exports = new (class extends controller {
   }
 
   async unwish(req, res, next) {
-    this.checkParamsId(req.params.productId);
+    if (!mongoose.Types.ObjectId.isValid(req.params.productId)) {
+      return next(createError(400, "Invalid id"));
+    }
     const userId = req.user.id;
     const productId = req.params.productId;
     try {
@@ -54,6 +59,10 @@ module.exports = new (class extends controller {
       return next(
         createError(500, "Could not get wishlist, please try again.")
       );
+    }
+
+    if (!userWithWishlist || userWithWishlist.wishlist.length === 0) {
+      return next(createError(404, "wishlist not found"));
     }
 
     this.response({ res, data: userWithWishlist.wishlist });

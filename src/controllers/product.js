@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const controller = require("./controller");
 const createError = require("../utils/httpError");
 
@@ -21,7 +22,9 @@ module.exports = new (class extends controller {
   }
 
   async updateProduct(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let updatedProduct;
     try {
       updatedProduct = await this.Product.findByIdAndUpdate(
@@ -43,7 +46,9 @@ module.exports = new (class extends controller {
   }
 
   async deleteProduct(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     try {
       await this.Product.findByIdAndDelete(req.params.id);
     } catch (err) {
@@ -56,7 +61,9 @@ module.exports = new (class extends controller {
   }
 
   async getProduct(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
     let product;
     try {
       product = await this.Product.findById(req.params.id);
@@ -94,7 +101,9 @@ module.exports = new (class extends controller {
   }
 
   async getProductReviews(req, res, next) {
-    this.checkParamsId(req.params.id);
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return next(createError(400, "Invalid id"));
+    }
 
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 20;
