@@ -28,6 +28,9 @@ router.put("/:id", fileUpload.single("image"), updateAdmin);
 //DELETE ADMIN
 router.delete("/:id", verifySuperAdmin, deleteAdmin);
 
+// GET wishlist
+router.get("/wishlist", getWishlist);
+
 //GET ADMIN
 router.get("/:id", getAdmin);
 
@@ -51,8 +54,5 @@ router.post("/wish/:productId", wish);
 
 // DELETE a product from wishlist
 router.delete("/wish/:productId", unwish);
-
-// GET wishlist
-router.get("/wishlist", getWishlist);
 
 module.exports = router;

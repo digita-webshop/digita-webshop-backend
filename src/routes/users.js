@@ -24,6 +24,9 @@ router.put("/:id", updateUser);
 //DELETE USER
 router.delete("/:id", verifyAdmin, deleteUser);
 
+// GET wishlist
+router.get("/wishlist", getWishlist);
+
 //GET USER
 router.get("/:id", getUser);
 
@@ -50,8 +53,5 @@ router.post("/wish/:productId", wish);
 
 // DELETE a product from wishlist
 router.delete("/wish/:productId", unwish);
-
-// GET wishlist
-router.get("/wishlist", getWishlist);
 
 module.exports = router;
