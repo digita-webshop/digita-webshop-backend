@@ -7,15 +7,6 @@ const gallerySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const reviewSchema = new mongoose.Schema(
-  {
-    userId: { type: mongoose.Types.ObjectId, ref: "User" },
-    rating: { type: Number, min: 0, max: 5 },
-    description: { type: String, trim: true },
-  },
-  { timestamps: true }
-);
-
 const ProductSchema = new mongoose.Schema(
   {
     title: { type: String, trim: true },
@@ -59,7 +50,7 @@ const ProductSchema = new mongoose.Schema(
     },
     shortDescription: { type: String, trim: true },
     fullDescription: { type: String, trim: true },
-    reviews: [reviewSchema],
+    reviews: [{ type: mongoose.Types.ObjectId, ref: "Review" }],
     brand: { type: String, trim: true },
   },
   { timestamps: true }
