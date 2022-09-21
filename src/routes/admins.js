@@ -9,7 +9,6 @@ const {
   getAdmins,
 } = require("./../controllers/admin");
 
-const fileUpload = require("../middlewares/fileUpload");
 const { verifySuperAdmin } = require("./../middlewares/verifyToken");
 const { wish, unwish, getWishlist } = require("./../controllers/wishlist");
 
@@ -20,10 +19,10 @@ const {
 } = require("./../controllers/order");
 
 // CREATE ADMIN
-router.post("/", verifySuperAdmin, fileUpload.single("image"), createAdmin);
+router.post("/", verifySuperAdmin, createAdmin);
 
 //UPDATE ADMIN
-router.put("/:id", fileUpload.single("image"), updateAdmin);
+router.put("/:id", updateAdmin);
 
 //DELETE ADMIN
 router.delete("/:id", verifySuperAdmin, deleteAdmin);
