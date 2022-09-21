@@ -98,7 +98,9 @@ module.exports = new (class extends controller {
     const { password, role, ...otherDetails } = user._doc;
 
     this.response({
-      res: res.cookie("access_token", token),
+      res: res.cookie("access_token", token, {
+        httpOnly: true,
+      }),
       message: "Login successful",
       data: { details: { ...otherDetails }, role },
     });
