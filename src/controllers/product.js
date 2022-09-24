@@ -79,6 +79,7 @@ module.exports = new (class extends controller {
   }
 
   async getProducts(req, res, next) {
+<<<<<<< HEAD
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
     let products, totalProducts;
@@ -89,9 +90,53 @@ module.exports = new (class extends controller {
           populate: { path: "userId", select: "userName email" },
         })
         .sort({ _id: 1 })
+=======
+    const query = req.query;
+    const pageNumber = parseInt(query.page) || 1;
+    const nPerPage = parseInt(query.limit) || 8;
+
+    let filters = {};
+    if (query?.category) {
+      filters.category = { $in: query.category.split("/") };
+    }
+    if (query?.color) {
+      filters.colors = { $in: query.color.split("/") };
+    }
+    if (query?.price) {
+      let min = query.price.split("/")[0].replace(/^\D+/g, "");
+      let max = query.price.split("/")[1].replace(/^\D+/g, "");
+      filters.price = { $gte: min, $lte: max };
+    }
+    let sort = { _id: -1 };
+    if (query?.sort) {
+      if (query.sort === "rating") {
+        sort = { rating: 1 };
+      }
+      if (query.sort === "latest") {
+        sort = { createdAt: -1 };
+      }
+      if (query.sort === "price-low-to-high") {
+        sort = { price: 1 };
+      }
+      if (query.sort === "price-high-to-low") {
+        sort = { price: -1 };
+      }
+    }
+    if (query.search) {
+      filters.title = {
+        $regex: new RegExp(".*" + query.search.trim() + ".*", "ig"),
+      };
+    }
+
+    let products;
+    try {
+      products = await this.Product.find(filters)
+        .populate("reviews.userId")
+        .sort(sort)
+>>>>>>> d57afbf778ee17e97ed6b20458c8f4c3733384fb
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);
-      totalProducts = await this.Product.countDocuments();
+      totalProducts = await this.Product.countDocuments(filters);
     } catch (err) {
       return next(
         createError(500, "Could not get products, please try again.")
