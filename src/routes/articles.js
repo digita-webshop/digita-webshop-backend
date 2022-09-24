@@ -5,12 +5,18 @@ const {
   createArticle,
   deleteArticle,
   getArticle,
-  getArticleReviews,
   getArticles,
   updateArticle,
 } = require("../controllers/article");
 
-const { verifyAdmin } = require("./../middlewares/verifyToken");
+const {
+  addArticleReview,
+  getArticlesReviews,
+  deleteArticleReview,
+  getReviewsByArticleId,
+} = require("./../controllers/review");
+
+const { verifyAdmin, verifyUser } = require("./../middlewares/verifyToken");
 
 //CREATE ARTICLE
 router.post("/", verifyAdmin, createArticle);
@@ -27,7 +33,25 @@ router.get("/find/:id", getArticle);
 //GET ALL ARTICLES
 router.get("/", getArticles);
 
-//GET ARTICLE REVIEWS
-router.get("/reviews/:id", verifyAdmin, getArticleReviews);
+// GET ALL ARTICLES REVIEWS
+router.get("/reviews", verifyAdmin, getArticlesReviews);
+
+// VALIDATOR FOR ADD ARTICLE REVIEW
+const validator = require("./../validators/review");
+
+//ADD ARTICLE REVIEW
+router.post(
+  "/reviews/:id",
+  verifyUser,
+  validator.reviewValidator(),
+  validator.validate,
+  addArticleReview
+);
+
+//DELETE ARTICLE REVIEW
+router.delete("/:aid/reviews/:id", verifyUser, deleteArticleReview);
+
+// GET REVIEWS BY ARTICLE ID
+router.get("/reviews/:aid", getReviewsByArticleId);
 
 module.exports = router;
