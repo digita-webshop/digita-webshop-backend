@@ -5,12 +5,18 @@ const {
   createProduct,
   deleteProduct,
   getProduct,
-  getProductReviews,
   getProducts,
   updateProduct,
 } = require("../controllers/product");
 
-const { verifyAdmin } = require("./../middlewares/verifyToken");
+const {
+  addProductReview,
+  getProductsReviews,
+  deleteProductReview,
+  getReviewsByProductId,
+} = require("./../controllers/review");
+
+const { verifyAdmin, verifyUser } = require("./../middlewares/verifyToken");
 
 //CREATE PRODUCT
 router.post("/", verifyAdmin, createProduct);
@@ -27,7 +33,25 @@ router.get("/find/:id", getProduct);
 //GET ALL PRODUCTS
 router.get("/", getProducts);
 
-//GET PRODUCT REVIEWS
-router.get("/reviews/:id", verifyAdmin, getProductReviews);
+// GET ALL PRODUCTS REVIEWS
+router.get("/reviews", verifyAdmin, getProductsReviews);
+
+// VALIDATOR FOR ADD PRODUCT REVIEW
+const validator = require("./../validators/review");
+
+//ADD PRODUCT REVIEW
+router.post(
+  "/reviews/:id",
+  verifyUser,
+  validator.reviewValidator(),
+  validator.validate,
+  addProductReview
+);
+
+//DELETE PRODUCT REVIEW
+router.delete("/:pid/reviews/:id", verifyUser, deleteProductReview);
+
+// GET REVIEWS BY PRODUCT ID
+router.get("/reviews/:pid", getReviewsByProductId);
 
 module.exports = router;
