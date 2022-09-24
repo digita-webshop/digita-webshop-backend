@@ -79,15 +79,31 @@ module.exports = new (class extends controller {
   }
 
   async getArticles(req, res, next) {
+    const query = req.query;
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
-    let articles;
+
+    let filters = {};
+    if (query?.category) {
+      filters.category = { $in: query.category.split("/") };
+    }
+    if (query.search) {
+      filters.title = {
+        $regex: new RegExp(".*" + query.search.trim() + ".*", "ig"),
+      };
+    }
+
+    let articles, totalArticles;
     try {
-      articles = await this.Article.find()
-        .populate("reviews.userId")
+      articles = await this.Article.find(filters)
+        .populate({
+          path: "reviews",
+          populate: { path: "userId", select: "userName email" },
+        })
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);
+      totalArticles = await this.Article.countDocuments(filters);
     } catch (err) {
       return next(
         createError(500, "Could not get articles, please try again.")
@@ -98,43 +114,7 @@ module.exports = new (class extends controller {
       res,
       message: "Articles found successfully",
       data: articles,
-    });
-  }
-
-  async getArticleReviews(req, res, next) {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return next(createError(400, "Invalid id"));
-    }
-    const pageNumber = parseInt(req.query.page) || 1;
-    const nPerPage = parseInt(req.query.limit) || 20;
-    let article;
-    try {
-      article = await this.Article.findById(req.params.id)
-        .sort({ _id: 1 })
-        .skip((pageNumber - 1) * nPerPage)
-        .limit(nPerPage);
-    } catch (err) {
-      return next(
-        createError(500, "Fetching article reviews failed, please try again.")
-      );
-    }
-
-    const list = await Promise.all(
-      article.reviews.map((reviewer) => {
-        try {
-          return this.User.findById(reviewer.userId);
-        } catch (err) {
-          return next(
-            createError(500, "Fetching user failed, please try again.")
-          );
-        }
-      })
-    );
-
-    this.response({
-      res,
-      message: "Article reviews found successfully",
-      data: list,
+      total: totalArticles,
     });
   }
 })();
