@@ -46,15 +46,12 @@ module.exports = new (class extends controller {
 
   async getWishlist(req, res, next) {
     const userId = req.user.id;
-    const pageNumber = parseInt(req.query.page) || 1;
-    const nPerPage = parseInt(req.query.limit) || 6;
-    let userWithWishlist;
+    let userWithWishlist, totalWishlist;
     try {
       userWithWishlist = await this.User.findById(userId)
         .populate("wishlist")
-        .sort({ _id: 1 })
-        .skip((pageNumber - 1) * nPerPage)
-        .limit(nPerPage);
+        .sort({ _id: 1 });
+      totalWishlist = userWithWishlist.wishlist.length;
     } catch (err) {
       return next(
         createError(500, "Could not get wishlist, please try again.")
@@ -65,6 +62,10 @@ module.exports = new (class extends controller {
       return next(createError(404, "wishlist not found"));
     }
 
-    this.response({ res, data: userWithWishlist.wishlist });
+    this.response({
+      res,
+      data: userWithWishlist.wishlist,
+      total: totalWishlist,
+    });
   }
 })();
