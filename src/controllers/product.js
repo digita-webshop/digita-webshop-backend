@@ -81,13 +81,17 @@ module.exports = new (class extends controller {
   async getProducts(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
-    let products;
+    let products, totalProducts;
     try {
       products = await this.Product.find()
-        .populate("reviews.userId")
+        .populate({
+          path: "reviews",
+          populate: { path: "userId", select: "userName email" },
+        })
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);
+      totalProducts = await this.Product.countDocuments();
     } catch (err) {
       return next(
         createError(500, "Could not get products, please try again.")
@@ -97,43 +101,7 @@ module.exports = new (class extends controller {
       res,
       message: "Products found successfully",
       data: products,
-    });
-  }
-
-  async getProductReviews(req, res, next) {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return next(createError(400, "Invalid id"));
-    }
-
-    const pageNumber = parseInt(req.query.page) || 1;
-    const nPerPage = parseInt(req.query.limit) || 20;
-    let product;
-    try {
-      product = await this.Product.findById(req.params.id)
-        .sort({ _id: 1 })
-        .skip((pageNumber - 1) * nPerPage)
-        .limit(nPerPage);
-    } catch (err) {
-      return next(
-        createError(500, "Could not get product reviews, please try again.")
-      );
-    }
-    const list = await Promise.all(
-      product.reviews.map((reviewer) => {
-        try {
-          return this.User.findById(reviewer.userId);
-        } catch (err) {
-          return next(
-            createError(500, "Could not get product reviews, please try again.")
-          );
-        }
-      })
-    );
-
-    this.response({
-      res,
-      message: "Product reviews found successfully",
-      data: list,
+      total: totalProducts,
     });
   }
 })();
