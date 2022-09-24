@@ -4,6 +4,7 @@ const router = express.Router();
 const authRoutes = require("./auth");
 const cartRoutes = require("./cart");
 const userRoutes = require("./users");
+const orderRoutes = require("./orders");
 const adminRoutes = require("./admins");
 const articleRoutes = require("./articles");
 const productRoutes = require("./products");
@@ -20,14 +21,17 @@ const error = require("./../middlewares/error");
 // Auth routes
 router.use("/auth", authRoutes);
 
-// Cart routes
-router.use("/cart", verifyUser, cartRoutes);
+// Order routes
+router.use("/orders", orderRoutes);
 
 // ARTICLES routes
 router.use("/articles", articleRoutes);
 
 // PRODUCTS routes
 router.use("/products", productRoutes);
+
+// Cart routes
+router.use("/cart", verifyUser, cartRoutes);
 
 // USER routes
 router.use("/users", verifyUser, userRoutes);

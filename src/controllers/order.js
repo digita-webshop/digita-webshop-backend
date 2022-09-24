@@ -3,10 +3,10 @@ const controller = require("./controller");
 const createError = require("../utils/httpError");
 
 module.exports = new (class extends controller {
-  async getAllOrders(req, res, next) {
+  async getOrders(req, res, next) {
     const pageNumber = parseInt(req.query.page) || 1;
     const nPerPage = parseInt(req.query.limit) || 6;
-    let orders;
+    let orders, totalOrders;
     try {
       orders = await this.Order.find()
         .populate("productId")
@@ -14,6 +14,7 @@ module.exports = new (class extends controller {
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);
+      totalOrders = await this.Order.countDocuments();
     } catch (err) {
       return next(createError(500, "Could not get orders, please try again."));
     }
@@ -25,6 +26,7 @@ module.exports = new (class extends controller {
       res,
       message: "Orders found",
       data: orders,
+      total: totalOrders,
     });
   }
 
@@ -38,7 +40,7 @@ module.exports = new (class extends controller {
     let userWithOrders;
     try {
       userWithOrders = await this.User.findById(req.params.uid)
-        .populate("orders")
+        .populate({ path: "orders", populate: { path: "productId" } })
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);

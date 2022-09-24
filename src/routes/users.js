@@ -14,7 +14,6 @@ const { wish, unwish, getWishlist } = require("./../controllers/wishlist");
 const {
   addOrder,
   deleteOrder,
-  getAllOrders,
   getOrdersByUserId,
 } = require("./../controllers/order");
 
@@ -32,9 +31,6 @@ router.get("/:id", getUser);
 
 //GET ALL USERS
 router.get("/", verifyAdmin, getUsers);
-
-// GET ALL ORDERS
-router.get("/orders", verifyAdmin, getAllOrders);
 
 // GET ORDERS BY USER ID
 router.get("/my-orders/:uid", getOrdersByUserId);
