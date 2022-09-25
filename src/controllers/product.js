@@ -79,21 +79,9 @@ module.exports = new (class extends controller {
   }
 
   async getProducts(req, res, next) {
-<<<<<<< HEAD
-    const pageNumber = parseInt(req.query.page) || 1;
-    const nPerPage = parseInt(req.query.limit) || 6;
-    let products, totalProducts;
-    try {
-      products = await this.Product.find()
-        .populate({
-          path: "reviews",
-          populate: { path: "userId", select: "userName email" },
-        })
-        .sort({ _id: 1 })
-=======
     const query = req.query;
     const pageNumber = parseInt(query.page) || 1;
-    const nPerPage = parseInt(query.limit) || 8;
+    const nPerPage = parseInt(query.limit) || 6;
 
     let filters = {};
     if (query?.category) {
@@ -128,12 +116,11 @@ module.exports = new (class extends controller {
       };
     }
 
-    let products;
+    let products, totalProducts;
     try {
       products = await this.Product.find(filters)
         .populate("reviews.userId")
         .sort(sort)
->>>>>>> d57afbf778ee17e97ed6b20458c8f4c3733384fb
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);
       totalProducts = await this.Product.countDocuments(filters);
