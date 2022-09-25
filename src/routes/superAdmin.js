@@ -19,7 +19,7 @@ const validator = require("./../validators/order");
 router.post("/order", validator.orderValidator(), validator.validate, addOrder);
 
 // DELETE ORDER
-router.delete("/orders/:oid", deleteOrder);
+router.delete("/order/:oid", deleteOrder);
 
 // ADD product to wishlist
 router.post("/wish/:productId", wish);
