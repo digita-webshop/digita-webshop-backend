@@ -1,13 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  createProduct,
-  deleteProduct,
-  getProduct,
-  getProducts,
-  updateProduct,
-} = require("../controllers/product");
+const { createProduct, deleteProduct, getProduct, getProducts, updateProduct } = require("../controllers/product");
 
 const {
   addProductReview,
@@ -34,19 +28,13 @@ router.get("/find/:id", getProduct);
 router.get("/", getProducts);
 
 // GET ALL PRODUCTS REVIEWS
-router.get("/reviews", verifyAdmin, getProductsReviews);
+router.get("/reviews", getProductsReviews);
 
 // VALIDATOR FOR ADD PRODUCT REVIEW
 const validator = require("./../validators/review");
 
 //ADD PRODUCT REVIEW
-router.post(
-  "/reviews/:id",
-  verifyUser,
-  validator.reviewValidator(),
-  validator.validate,
-  addProductReview
-);
+router.post("/reviews/:id", verifyUser, validator.reviewValidator(), validator.validate, addProductReview);
 
 //DELETE PRODUCT REVIEW
 router.delete("/:pid/reviews/:id", verifyUser, deleteProductReview);

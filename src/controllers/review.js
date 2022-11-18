@@ -131,9 +131,7 @@ module.exports = new (class extends controller {
     try {
       product = await this.Product.findById(req.params.id).populate("reviews");
     } catch (err) {
-      return next(
-        createError(500, "Could not find product, please try again.")
-      );
+      return next(createError(500, "Could not find product, please try again."));
     }
 
     if (!product) {
@@ -155,21 +153,14 @@ module.exports = new (class extends controller {
   }
 
   async deleteProductReview(req, res, next) {
-    if (
-      !mongoose.Types.ObjectId.isValid(req.params.pid) ||
-      !mongoose.Types.ObjectId.isValid(req.params.id)
-    ) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.pid) || !mongoose.Types.ObjectId.isValid(req.params.id)) {
       return next(createError(400, "Invalid id"));
     }
     let review;
     try {
-      review = await this.Review.findById(req.params.id)
-        .populate("userId")
-        .populate("productId");
+      review = await this.Review.findById(req.params.id).populate("userId").populate("productId");
     } catch (err) {
-      return next(
-        createError(500, "Could not delete review, please try again.")
-      );
+      return next(createError(500, "Could not delete review, please try again."));
     }
 
     if (!review || !review.productId) {
@@ -178,9 +169,7 @@ module.exports = new (class extends controller {
 
     /* This is checking if the user is the owner of the review. */
     if (req.user.role === "user" && review.userId.id !== req.user.id) {
-      return next(
-        createError(401, "You are not allowed to delete this review")
-      );
+      return next(createError(401, "You are not allowed to delete this review"));
     }
 
     if (review.productId.id !== req.params.pid) {
@@ -192,9 +181,7 @@ module.exports = new (class extends controller {
       review.productId.reviews.pull(review);
       await review.productId.save();
     } catch (err) {
-      return next(
-        createError(500, "Deleting review failed, please try again.")
-      );
+      return next(createError(500, "Deleting review failed, please try again."));
     }
 
     this.response({
@@ -217,9 +204,7 @@ module.exports = new (class extends controller {
     try {
       article = await this.Article.findById(req.params.id).populate("reviews");
     } catch (err) {
-      return next(
-        createError(500, "Could not find article, please try again.")
-      );
+      return next(createError(500, "Could not find article, please try again."));
     }
 
     if (!article) {
@@ -241,33 +226,18 @@ module.exports = new (class extends controller {
   }
 
   async deleteArticleReview(req, res, next) {
-    if (
-      !mongoose.Types.ObjectId.isValid(req.params.aid) ||
-      !mongoose.Types.ObjectId.isValid(req.params.id)
-    ) {
+    if (!mongoose.Types.ObjectId.isValid(req.params.aid) || !mongoose.Types.ObjectId.isValid(req.params.id)) {
       return next(createError(400, "Invalid id"));
     }
     let review;
     try {
-      review = await this.Review.findById(req.params.id)
-        .populate("userId")
-        .populate("articleId");
+      review = await this.Review.findById(req.params.id).populate("userId").populate("articleId");
     } catch (err) {
-      return next(
-        createError(500, "Could not delete review, please try again.")
-      );
+      return next(createError(500, "Could not delete review, please try again."));
     }
 
     if (!review || !review.articleId) {
       return next(createError(404, "Review not found"));
-    }
-
-    /* This is checking if the user is the owner of the review. */
-    // TODO: Add to the exception of admin
-    if (review.userId.id !== req.user.id) {
-      return next(
-        createError(401, "You are not authorized to delete this review")
-      );
     }
 
     if (review.articleId.id !== req.params.aid) {
@@ -279,9 +249,7 @@ module.exports = new (class extends controller {
       review.articleId.reviews.pull(review);
       await review.articleId.save();
     } catch (err) {
-      return next(
-        createError(500, "Deleting review failed, please try again.")
-      );
+      return next(createError(500, "Deleting review failed, please try again."));
     }
 
     this.response({
