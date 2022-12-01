@@ -68,4 +68,33 @@ module.exports = new (class extends controller {
       data: cart,
     });
   }
+
+  async deleteCart(req, res) {
+    const userId = req.user.id;
+    let itemIndex;
+    try {
+      let cart = await this.Cart.findOne({ userId });
+      if (!cart) {
+        return this.response({
+          res,
+          code: 404,
+          message: "Cart not found!",
+        });
+      }
+      //moShahi: we can do it with filter but i write it ... :)
+      itemIndex = await cart.products.findIndex(
+        (p) => p.productId === productId
+      );
+      await cart.products.splice(itemIndex, 1);
+      await cart.save();
+    } catch (err) {
+      return next(createError(500, "Could not find cart, please try again."));
+    }
+    return this.response({
+      res,
+      code: 200,
+      message: "Cart deleted successfully",
+      data: cart,
+    });
+  }
 })();
