@@ -6,7 +6,7 @@ const { addToCart, getCart, deleteCart } = require("../controllers/cart");
 router.post("/", addToCart);
 
 // ADD PRODUCT TO CART
-router.post("/delete", deleteCart);
+router.delete("/delete/:productId", deleteCart);
 
 // GET PRODUCTS FROM CART
 router.get("/", getCart);

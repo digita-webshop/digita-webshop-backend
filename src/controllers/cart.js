@@ -70,7 +70,7 @@ module.exports = new (class extends controller {
   }
 
   async deleteCart(req, res) {
-    const { productId } = req.body;
+    const productId = req.params;
     const userId = req.user.id;
     let itemIndex;
     try {
