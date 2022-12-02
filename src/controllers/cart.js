@@ -1,5 +1,6 @@
 const controller = require("./controller");
 const createError = require("../utils/httpError");
+const mongoose = require("mongoose");
 module.exports = new (class extends controller {
   async addToCart(req, res) {
     const { productId, quantity, name, price } = req.body;
@@ -13,7 +14,7 @@ module.exports = new (class extends controller {
 
     if (cart) {
       //cart exists for user
-      let itemIndex = cart.products.findIndex((p) => p.productId === productId);
+      let itemIndex = cart.products.findIndex((p) => p.productId.toString() === productId._id);
 
       if (itemIndex > -1) {
         //product exists in the cart, update the quantity
@@ -27,9 +28,7 @@ module.exports = new (class extends controller {
       try {
         cart = await cart.save();
       } catch (err) {
-        return next(
-          createError(500, "Could not update cart, please try again.")
-        );
+        return next(createError(500, "Could not update cart, please try again."));
       }
       return this.response({
         res,
@@ -72,9 +71,9 @@ module.exports = new (class extends controller {
   async deleteCart(req, res) {
     const productId = req.params;
     const userId = req.user.id;
-    let itemIndex;
+    let cart;
     try {
-      let cart = await this.Cart.findOne({ userId });
+      cart = await this.Cart.findOne({ userId });
       if (!cart) {
         return this.response({
           res,
@@ -82,13 +81,11 @@ module.exports = new (class extends controller {
           message: "Cart not found!",
         });
       }
-      //moShahi: we can do it with filter but i write it ... :)
-      itemIndex = await cart.products.findIndex(
-        (p) => p.productId === productId
-      );
-      await cart.products.splice(itemIndex, 1);
+      let filteredCart = await cart.products.filter((p) => p._id.toString() !== productId?.productId);
+      cart.products = filteredCart;
       await cart.save();
     } catch (err) {
+      console.log(err);
       return next(createError(500, "Could not find cart, please try again."));
     }
     return this.response({
