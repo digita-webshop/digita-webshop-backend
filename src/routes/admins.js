@@ -1,22 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  createAdmin,
-  updateAdmin,
-  deleteAdmin,
-  getAdmin,
-  getAdmins,
-} = require("./../controllers/admin");
+const { createAdmin, updateAdmin, deleteAdmin, getAdmin, getAdmins } = require("./../controllers/admin");
 
 const { verifySuperAdmin } = require("./../middlewares/verifyToken");
 const { wish, unwish, getWishlist } = require("./../controllers/wishlist");
 
-const {
-  addOrder,
-  deleteOrder,
-  getOrdersByUserId,
-} = require("./../controllers/order");
+const { addOrder, deleteOrder, getOrdersByUserId } = require("./../controllers/order");
 
 // CREATE ADMIN
 router.post("/", verifySuperAdmin, createAdmin);
@@ -43,7 +33,7 @@ router.get("/my-orders/:uid", getOrdersByUserId);
 const validator = require("./../validators/order");
 
 // ADD ORDER
-router.post("/order", validator.orderValidator(), validator.validate, addOrder);
+router.post("/order", validator.validate, addOrder);
 
 // DELETE ORDER
 router.delete("/orders/:oid", deleteOrder);

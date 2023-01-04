@@ -1,21 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const {
-  updateUser,
-  deleteUser,
-  getUser,
-  getUsers,
-} = require("./../controllers/user");
+const { updateUser, deleteUser, getUser, getUsers } = require("./../controllers/user");
 
 const { verifyAdmin } = require("./../middlewares/verifyToken");
 const { wish, unwish, getWishlist } = require("./../controllers/wishlist");
 
-const {
-  addOrder,
-  deleteOrder,
-  getOrdersByUserId,
-} = require("./../controllers/order");
+const { addOrder, deleteOrder, getOrdersByUserId } = require("./../controllers/order");
 
 //UPDATE USER
 router.put("/:id", updateUser);
@@ -39,7 +30,7 @@ router.get("/my-orders/:uid", getOrdersByUserId);
 const validator = require("./../validators/order");
 
 // ADD ORDER
-router.post("/order", validator.orderValidator(), validator.validate, addOrder);
+router.post("/order", validator.validate, addOrder);
 
 // DELETE ORDER
 router.delete("/orders/:oid", deleteOrder);

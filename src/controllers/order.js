@@ -63,9 +63,10 @@ module.exports = new (class extends controller {
       ...req.body,
       userId: req.user.id,
     });
+    let userId = req.user.id;
     let user;
     try {
-      user = await this.User.findById(req.user.id);
+      user = await this.User.findById(userId);
     } catch (err) {
       return next(createError(500, "Could not find user, please try again."));
     }
@@ -79,6 +80,15 @@ module.exports = new (class extends controller {
       await user.save();
     } catch (err) {
       return next(createError(500, "Adding order failed, please try again."));
+    }
+    let cart;
+    try {
+      cart = await this.Cart.findOne({ userId });
+
+      cart.products = [];
+      await cart.save();
+    } catch (err) {
+      return next(createError(500, "removing cart items  failed, please try again."));
     }
 
     this.response({
@@ -96,9 +106,7 @@ module.exports = new (class extends controller {
     try {
       order = await this.Order.findById(req.params.oid).populate("userId");
     } catch (err) {
-      return next(
-        createError(500, "Could not delete order, please try again.")
-      );
+      return next(createError(500, "Could not delete order, please try again."));
     }
 
     if (!order) {
@@ -106,9 +114,7 @@ module.exports = new (class extends controller {
     }
 
     if (order.userId.id !== req.user.id) {
-      return next(
-        createError(401, "You are not authorized to delete this order")
-      );
+      return next(createError(401, "You are not authorized to delete this order"));
     }
 
     try {

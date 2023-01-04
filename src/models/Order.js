@@ -14,13 +14,13 @@ const orderSchema = new mongoose.Schema(
     paymentMethod: { type: String, required: true },
     address: { type: Object },
     notes: { type: String },
+    coupon: { type: String },
     status: {
       type: String,
-      required: true,
       enum: ["pending", "delivered", "cancelled"],
       default: "pending",
     },
-    userId: { type: mongoose.Types.ObjectId, required: true, ref: "User" },
+    userId: { type: mongoose.Types.ObjectId, ref: "User" },
   },
   { timestamps: true }
 );
