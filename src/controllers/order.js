@@ -19,9 +19,6 @@ module.exports = new (class extends controller {
       return next(createError(500, "Could not get orders, please try again."));
     }
 
-    if (!orders) {
-      return next(createError(404, "Orders not found"));
-    }
     this.response({
       res,
       message: "Orders found",

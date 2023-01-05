@@ -14,9 +14,7 @@ module.exports = new (class extends controller {
         $addToSet: { wishlist: productId },
       });
     } catch (err) {
-      return next(
-        createError(500, "Could not add product to wishlist, please try again.")
-      );
+      return next(createError(500, "Could not add product to wishlist, please try again."));
     }
 
     this.response({ res, message: "Product added to wishlist." });
@@ -33,12 +31,7 @@ module.exports = new (class extends controller {
         $pull: { wishlist: productId },
       });
     } catch (err) {
-      return next(
-        createError(
-          500,
-          "Could not remove product from wishlist, please try again."
-        )
-      );
+      return next(createError(500, "Could not remove product from wishlist, please try again."));
     }
 
     this.response({ res, message: "Product removed from wishlist." });
@@ -48,17 +41,12 @@ module.exports = new (class extends controller {
     const userId = req.user.id;
     let userWithWishlist, totalWishlist;
     try {
-      userWithWishlist = await this.User.findById(userId)
-        .populate("wishlist")
-        .sort({ _id: 1 });
+      userWithWishlist = await this.User.findById(userId).populate("wishlist").sort({ _id: 1 });
       totalWishlist = userWithWishlist.wishlist.length;
     } catch (err) {
-      return next(
-        createError(500, "Could not get wishlist, please try again.")
-      );
+      return next(createError(500, "Could not get wishlist, please try again."));
     }
-
-    if (!userWithWishlist || userWithWishlist.wishlist.length === 0) {
+    if (!userWithWishlist) {
       return next(createError(404, "wishlist not found"));
     }
 

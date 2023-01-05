@@ -21,9 +21,6 @@ module.exports = new (class extends controller {
       return next(createError(500, "Could not get reviews, please try again."));
     }
 
-    if (!reviews) {
-      return next(createError(404, "Reviews not found"));
-    }
     this.response({
       res,
       message: "Reviews found",
