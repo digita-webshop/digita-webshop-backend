@@ -37,7 +37,7 @@ module.exports = new (class extends controller {
     let userWithOrders;
     try {
       userWithOrders = await this.User.findById(req.params.uid)
-        .populate({ path: "orders", populate: { path: "productId" } })
+        .populate({ path: "orders", populate: { path: "products" } })
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);
@@ -45,9 +45,6 @@ module.exports = new (class extends controller {
       return next(createError(500, "Could not get orders, please try again."));
     }
 
-    if (!userWithOrders || userWithOrders.orders.length === 0) {
-      return next(createError(404, "User has no orders"));
-    }
     this.response({
       res,
       message: "User orders found",
