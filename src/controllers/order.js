@@ -37,7 +37,7 @@ module.exports = new (class extends controller {
     let userWithOrders;
     try {
       userWithOrders = await this.User.findById(req.params.uid)
-        .populate({ path: "orders", populate: { path: "products" } })
+        .populate({ path: "orders", populate: { path: "products.productId" } })
         .sort({ _id: 1 })
         .skip((pageNumber - 1) * nPerPage)
         .limit(nPerPage);
