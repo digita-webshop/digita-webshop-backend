@@ -5,7 +5,7 @@
 Developed by [Node.js](https://nodejs.org/) , [Express.js](https://expressjs.com/) and [MongoDB](https://mongodb.com/).
 
 ![GitHub top language](https://img.shields.io/github/languages/top/digita-webshop/digita-webshop-backend)&nbsp;
-![Stars](https://img.shields.io/github/stars/digita-webshop/digita-webshop-backend) ![Forks](https://img.shields.io/github/forks/digita-webshop/digita-webshop-backend) ![Repo Size](https://img.shields.io/github/repo-size/digita-webshop/digita-webshop-backend) [![MIT License](https://img.shields.io/badge/license-MIT-a1356a)](LICENSE.txt)
+![Stars](https://img.shields.io/github/stars/digita-webshop/digita-webshop-backend) ![Forks](https://img.shields.io/github/forks/digita-webshop/digita-webshop-backend) ![Repo Size](https://img.shields.io/github/repo-size/digita-webshop/digita-webshop-backend)
 
 </div>
 
