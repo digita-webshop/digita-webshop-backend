@@ -11,9 +11,7 @@ module.exports = new (class extends controller {
     try {
       newUser = await this.User.findOne({ email: req.body.email });
     } catch (err) {
-      return next(
-        createError(500, "Something went wrong, could not find a User.")
-      );
+      return next(createError(500, "Something went wrong, could not find a User."));
     }
     if (newUser) {
       return this.response({
@@ -23,9 +21,7 @@ module.exports = new (class extends controller {
       });
     }
 
-    newUser = new this.User(
-      _.pick(req.body, ["userName", "email", "password"])
-    );
+    newUser = new this.User(_.pick(req.body, ["userName", "email", "password"]));
 
     try {
       const salt = await bcrypt.genSalt(10);
@@ -36,9 +32,7 @@ module.exports = new (class extends controller {
     try {
       await newUser.save();
     } catch (err) {
-      return next(
-        createError(500, "Signing up failed, please try again later.")
-      );
+      return next(createError(500, "Signing up failed, please try again later."));
     }
 
     this.response({
@@ -53,9 +47,7 @@ module.exports = new (class extends controller {
     try {
       user = await this.User.findOne({ email: req.body.email });
     } catch (err) {
-      return next(
-        createError(500, "Logging in failed, please try again later.")
-      );
+      return next(createError(500, "Logging in failed, please try again later."));
     }
     if (!user) {
       return this.response({
@@ -68,12 +60,7 @@ module.exports = new (class extends controller {
     try {
       isValidPassword = await bcrypt.compare(req.body.password, user.password);
     } catch (err) {
-      return next(
-        createError(
-          500,
-          "Could not log you in, please check your credentials and try again."
-        )
-      );
+      return next(createError(500, "Could not log you in, please check your credentials and try again."));
     }
     if (!isValidPassword) {
       return this.response({
@@ -84,15 +71,9 @@ module.exports = new (class extends controller {
     }
     let token;
     try {
-      token = jwt.sign(
-        { id: user._id, role: user.role },
-        config.get("jwt_key"),
-        { expiresIn: "5d" }
-      );
+      token = jwt.sign({ id: user._id, role: user.role }, config.get("jwt_key"), { expiresIn: "5d" });
     } catch (err) {
-      return next(
-        createError(500, "Logging in failed, please try again later.")
-      );
+      return next(createError(500, "Logging in failed, please try again later."));
     }
 
     const { password, role, ...otherDetails } = user._doc;
@@ -100,6 +81,8 @@ module.exports = new (class extends controller {
     this.response({
       res: res.cookie("access_token", token, {
         httpOnly: true,
+        secure: true,
+        sameSite: "none",
       }),
       message: "Login successful",
       data: { details: { ...otherDetails }, role },

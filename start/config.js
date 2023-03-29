@@ -3,7 +3,7 @@ const cookieParser = require("cookie-parser");
 const path = require("path");
 
 module.exports = function (app, express) {
-  app.use(cors());
+  app.use(cors({ credentials: true, origin: "https://digita-webshop.iran.liara.run" }));
   app.use(cookieParser());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
