@@ -9,9 +9,7 @@ module.exports = new (class extends controller {
     try {
       savedProduct = await newProduct.save();
     } catch (err) {
-      return next(
-        createError(500, "Could not create product, please try again.")
-      );
+      return next(createError(500, "Could not create product, please try again."));
     }
 
     this.response({
@@ -27,15 +25,9 @@ module.exports = new (class extends controller {
     }
     let updatedProduct;
     try {
-      updatedProduct = await this.Product.findByIdAndUpdate(
-        req.params.id,
-        { $set: { ...req.body } },
-        { new: true }
-      );
+      updatedProduct = await this.Product.findByIdAndUpdate(req.params.id, { $set: { ...req.body } }, { new: true });
     } catch (err) {
-      return next(
-        createError(500, "Could not update product, please try again.")
-      );
+      return next(createError(500, "Could not update product, please try again."));
     }
 
     this.response({
@@ -52,9 +44,7 @@ module.exports = new (class extends controller {
     try {
       await this.Product.findByIdAndDelete(req.params.id);
     } catch (err) {
-      return next(
-        createError(500, "Could not delete product, please try again.")
-      );
+      return next(createError(500, "Could not delete product, please try again."));
     }
 
     this.response({ res, message: "Product deleted successfully" });
@@ -81,7 +71,7 @@ module.exports = new (class extends controller {
   async getProducts(req, res, next) {
     const query = req.query;
     const pageNumber = parseInt(query.page) || 1;
-    const nPerPage = parseInt(query.limit) || 6;
+    const nPerPage = parseInt(query.limit) || 9;
 
     let filters = {};
     if (query?.category) {
@@ -125,9 +115,7 @@ module.exports = new (class extends controller {
         .limit(nPerPage);
       totalProducts = await this.Product.countDocuments(filters);
     } catch (err) {
-      return next(
-        createError(500, "Could not get products, please try again.")
-      );
+      return next(createError(500, "Could not get products, please try again."));
     }
     this.response({
       res,
