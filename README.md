@@ -36,13 +36,36 @@ Developed by [Node.js](https://nodejs.org/) , [Express.js](https://expressjs.com
   yarn dev
   ```
   
+
 ## 🤝 Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+The community is always looking for talented individuals to share their knowledge and creativity to build innovative projects that will change the world.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+Contributing to open source projects not only benefits the community, but it also helps you grow as a developer by learning new skills, collaborating with others, and gaining recognition for your contributions.
 
-## License
+We greatly appreciate any contribution you can make to our project. Whether it's a suggestion, bug report, or enhancement, your input is invaluable to us.
+
+
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+Don't forget to give our project a star to show your support! We're excited to see what amazing features you'll bring to our project. Thank you for your contributions!
+
+## ✅ Project Status
+
+Project is: _complete_ .
+
+## 💬 Contact
+
+Created by [@amirmalekian](https://github.com/amirmalekian), [@tohiidd](https://github.com/tohiidd), [@moshahi](https://github.com/moshahi)
+ <p>
+  if you need help, ask our. we will try to answer as soon as possible.
+ </p>
+
+## 📝 License
 
 This project is open source and available under the [GPL-3.0 license](https://github.com/digita-webshop/digita-webshop-backend/blob/main/LICENSE).
