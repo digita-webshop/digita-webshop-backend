@@ -1,0 +1,18 @@
+---
+swagger: '2.0'
+info:
+    description: Digita Shop Api with Express & Mongo
+    version: '1.0.0'
+    title: Digita Web Shop API
+    contact:
+        email: 
+externalDocs:
+    description: Read about the developer
+    url: http://127.0.0.1:8080/docs
+host: 127.0.0.1:8080/api
+schemes:
+    - http
+    - https
+tags:
+    - name: auth
+      description: Operations About Auth
