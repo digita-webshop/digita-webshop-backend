@@ -11,8 +11,9 @@ require("./start/config")(app, express);
 require("./start/db")(app);
 require("./start/logging")();
 
-// swagger
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // routes
 app.use("/api", router);
+
+// swagger
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));

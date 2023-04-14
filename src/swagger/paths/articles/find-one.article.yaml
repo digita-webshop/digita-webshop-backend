@@ -1,0 +1,20 @@
+---
+get:
+    tags:
+      - articles
+    summary: Find One Article
+    description: Find One Article Endpoints
+    produces:
+      - application/json
+    parameters:
+      - in: path
+        name: id 
+        type: string 
+        description: id of article
+
+    responses:
+      200:
+        description: Successful To Get One Articles
+      500:
+        description: Server Error
+

@@ -1,0 +1,24 @@
+---
+Articles:
+    type: object
+    properties:
+      _id:
+          type: string
+      image:
+          type: string
+      description:
+          type: string
+      writer:
+          type: string
+      category:
+          type: string
+      reviews: 
+          type: array
+      createdAt: 
+          type: string
+      updatedAt: 
+          type: string
+      __v: 
+          type: number
+    xml:
+        name: Articles

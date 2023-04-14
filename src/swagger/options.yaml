@@ -11,8 +11,11 @@ externalDocs:
     url: http://127.0.0.1:8080/docs
 host: 127.0.0.1:8080/api
 schemes:
-    - http
     - https
+    - http
 tags:
     - name: auth
       description: Operations About Auth
+
+    - name: articles
+      description: Operations About Articles
