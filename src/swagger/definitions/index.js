@@ -11,7 +11,7 @@ const articleParse = YAML.parse(article);
 
 const definitions = {
     definitions: {
-        ...createUserParse,
+        // ...createUserParse,
         ...articleParse,
     },
 };

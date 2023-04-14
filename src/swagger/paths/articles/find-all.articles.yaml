@@ -2,8 +2,8 @@
 get:
     tags:
       - articles
-    summary: Articles
-    description: Articles Endpoints
+    summary: Find All Articles
+    description: Find All Articles Endpoints
     produces:
       - application/json
       - application/xml

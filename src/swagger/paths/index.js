@@ -3,7 +3,7 @@ const articlesPaths = require('./articles');
 
 const paths = {
     paths: {
-        ...authPaths,
+        // ...authPaths,
         ...articlesPaths,
     },
 };

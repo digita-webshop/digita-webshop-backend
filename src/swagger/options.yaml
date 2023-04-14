@@ -14,8 +14,8 @@ schemes:
     - https
     - http
 tags:
-    - name: auth
-      description: Operations About Auth
+    # - name: auth
+    #   description: Operations About Auth
 
     - name: articles
       description: Operations About Articles
