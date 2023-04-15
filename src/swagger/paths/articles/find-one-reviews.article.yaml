@@ -1,0 +1,19 @@
+---
+get:
+    tags:
+      - articles
+    summary: Find One Article Reviews
+    description: Find One Article Reviews Endpoints -- Get Review By Article ID
+    produces:
+      - application/json
+    parameters: 
+      - in: path
+        name: aid
+        type: string
+        description: Article id
+    responses:
+      200:
+        description: Successful To Get One Article Reviews
+      500:
+        description: Server Error
+

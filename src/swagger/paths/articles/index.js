@@ -11,8 +11,12 @@ const findOneArticles = fs.readFileSync(path.join(__dirname, 'find-one.article.y
 const findOneArticlesParse = YAML.parse(findOneArticles);
 
 // find all articles reviews
-const findAllArticleReviews = fs.readFileSync(path.join(__dirname, 'find-all-reviews.article.yaml'), 'utf8');
-const findAllArticleReviewsParse = YAML.parse(findAllArticleReviews);
+const findAllArticlesReviews = fs.readFileSync(path.join(__dirname, 'find-all-reviews.article.yaml'), 'utf8');
+const findAllArticlesReviewsParse = YAML.parse(findAllArticlesReviews);
+
+// find one article reviews
+const findOneArticleReviews = fs.readFileSync(path.join(__dirname, 'find-one-reviews.article.yaml'), 'utf8');
+const findOneArticleReviewsParse = YAML.parse(findOneArticleReviews);
 
 
 const authPaths = {
@@ -23,7 +27,10 @@ const authPaths = {
         ...findOneArticlesParse,
     },
     '/articles/reviews': {
-        ...findAllArticleReviewsParse,
+        ...findAllArticlesReviewsParse,
+    },
+    '/articles/reviews/{aid}': {
+        ...findOneArticleReviewsParse,
     }
 }
 
