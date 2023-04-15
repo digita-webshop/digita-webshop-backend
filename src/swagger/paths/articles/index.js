@@ -10,6 +10,10 @@ const findAllArticlesParse = YAML.parse(findAllArticles);
 const findOneArticles = fs.readFileSync(path.join(__dirname, 'find-one.article.yaml'), 'utf8');
 const findOneArticlesParse = YAML.parse(findOneArticles);
 
+// find all articles reviews
+const findAllArticleReviews = fs.readFileSync(path.join(__dirname, 'find-all-reviews.article.yaml'), 'utf8');
+const findAllArticleReviewsParse = YAML.parse(findAllArticleReviews);
+
 
 const authPaths = {
     '/articles': {
@@ -17,6 +21,9 @@ const authPaths = {
     },
     '/articles/find/{id}': {
         ...findOneArticlesParse,
+    },
+    '/articles/reviews': {
+        ...findAllArticleReviewsParse,
     }
 }
 

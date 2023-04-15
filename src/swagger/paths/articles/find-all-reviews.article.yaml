@@ -1,0 +1,14 @@
+---
+get:
+    tags:
+      - articles
+    summary: Find All Articles Reviews
+    description: Find All Articles Reviews Endpoints
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Successful To Get All Articles Reviews
+      500:
+        description: Server Error
+

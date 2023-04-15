@@ -1,6 +1,4 @@
 const express = require("express");
-const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("./src/swagger");
 
 // express app
 const app = express();
@@ -14,6 +12,3 @@ require("./start/logging")();
 
 // routes
 app.use("/api", router);
-
-// swagger
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
