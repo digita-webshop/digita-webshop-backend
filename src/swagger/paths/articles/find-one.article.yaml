@@ -14,7 +14,20 @@ get:
 
     responses:
       200:
-        description: Successful To Get One Articles
+        description: Find One Article Data Successful
+        schema:
+          type: object
+          properties:
+            code: 
+              type: number
+              required: true
+              enum: [200]
+            message: 
+              type: string
+              required: true
+              enum: ['Article found successfully']
+            data:
+              $ref: '#/definitions/Articles'
       500:
         description: Server Error
 
