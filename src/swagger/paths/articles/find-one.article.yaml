@@ -1,0 +1,33 @@
+---
+get:
+    tags:
+      - articles
+    summary: Find One Article
+    description: Find One Article Endpoints
+    produces:
+      - application/json
+    parameters:
+      - in: path
+        name: id 
+        type: string 
+        description: id of article
+
+    responses:
+      200:
+        description: Find One Article Data Successful
+        schema:
+          type: object
+          properties:
+            code: 
+              type: number
+              required: true
+              enum: [200]
+            message: 
+              type: string
+              required: true
+              enum: ['Article found successfully']
+            data:
+              $ref: '#/definitions/Articles'
+      500:
+        description: Server Error
+

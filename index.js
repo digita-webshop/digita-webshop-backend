@@ -4,9 +4,11 @@ const express = require("express");
 const app = express();
 const router = require("./src/routes");
 
+
 require("./start/config")(app, express);
 require("./start/db")(app);
 require("./start/logging")();
+
 
 // routes
 app.use("/api", router);

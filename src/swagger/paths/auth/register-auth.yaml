@@ -1,0 +1,34 @@
+---
+post:
+    tags:
+        - user
+    summary: Register User
+    description: ''
+    produces:
+        - application/json
+    parameters:
+        - in: body
+          name: Register
+          description: Register User
+          schema:
+            type: object
+            required:
+              - userName
+                email
+                password
+            properties:
+              userName: 
+                type: string
+              email: 
+                type: string
+              password:
+                type: string
+                minimum: 6
+            
+
+    responses:
+      '201':
+        description: successful operation
+      '401':
+        description: Invalid email/password supplied
+

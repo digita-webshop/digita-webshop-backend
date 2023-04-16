@@ -1,0 +1,15 @@
+---
+get:
+    tags:
+      - articles
+    summary: Find All Articles
+    description: Find All Articles Endpoints
+    produces:
+      - application/json
+      - application/xml
+    responses:
+      200:
+        description: Successful To Get All Articles
+      500:
+        description: Server Error
+

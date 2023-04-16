@@ -1,0 +1,28 @@
+---
+post:
+    tags:
+      - user
+    summary: Login
+    description: 'Login User Endpoint'
+    produces:
+      - application/json
+    parameters:
+        - in: body
+          name: login
+          description: Login User
+          schema:
+            type: object
+            required:
+              - email 
+                password
+            properties:
+              email: 
+                type: string
+              password:
+                type: string
+    responses:
+      '201':
+        description: successful operation
+      '401':
+        description: Invalid email//password supplied
+
